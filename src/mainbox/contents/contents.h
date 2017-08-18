@@ -5,6 +5,7 @@
 #ifndef GTK_MAIN_CONTENTS_H
 #define GTK_MAIN_CONTENTS_H
 #include "../mainbox.h"
+#include "../../data/data.h"
 
 class mainbox::content1 : public Gtk::Box
 {
@@ -25,8 +26,8 @@ protected:
     worktools *worktools_box;
     class img_area;
     img_area *imgarea;
-    Gtk::Box img_box1,img_box2;
-    content2_imgbox img_box1a;
+    Gtk::Box img_box2;
+    content2_imgbox img_box1;
 
     Glib::RefPtr<Gdk::Window> window;
 
