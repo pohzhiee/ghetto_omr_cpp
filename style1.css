@@ -14,8 +14,31 @@
     left top, left bottom,
     from (shade (#ff0000, 1.00)),
     to (shade (#ffaaaa, 0.9)));
+    /*border-color: #000000;*/
 }
 
 #image_box {
-    background: #eeeeff;
+    background: #ffff00;
+    border-width: 2px;
+    border-style: dotted;
+    border-color: #000000;
+}
+
+
+#img_box {
+    background: #0000ff;
+    /*color: transparent;*/
+    /*border-width: 10px;*/
+    /*border-style: dotted;*/
+    /*border-color: #000000;*/
+}
+
+
+
+#img_box2 {
+    background: #ff00ff;
+    border-width: 5px;
+    border-style: dotted;
+    border-color: #000000;
+    /*color: transparent;*/
 }

@@ -8,8 +8,8 @@
 mainbox::content2::img_area::img_area(content2 *pinp)
 {
 
-//    pContent = pinp;
-    set_name("image_box");
+    pContent = pinp;
+    set_name("img_area");
     set_vexpand(FALSE);
     set_hexpand(FALSE);
     set_halign(Gtk::ALIGN_CENTER);
@@ -28,8 +28,9 @@ mainbox::content2::img_area::img_area(content2 *pinp)
     }
 //     Show at least a quarter of the image.
     if (m_image)
-        set_size_request(m_image->get_width()/2, m_image->get_height()/2);
+        set_size_request(m_image->get_width(), m_image->get_height());
 }
+
 
 mainbox::content2::img_area::~img_area()
 {
@@ -43,15 +44,45 @@ bool mainbox::content2::img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& c
     Gtk::Allocation allocation = get_allocation();
     const int width = allocation.get_width();
     const int height = allocation.get_height();
-
     // Draw the image in the middle of the drawing area, or (if the image is
     // larger than the drawing area) draw the middle part of the image.
-    int a = (width - m_image->get_width())/2;
-    int b = (height - m_image->get_height())/2;
-    Gdk::Cairo::set_source_pixbuf(cr, m_image,a, b);
+    Gdk::Cairo::set_source_pixbuf(cr, m_image,(height - m_image->get_height())/2, (width - m_image->get_width())/2);
     cr->paint();
 
     return true;
+}
+
+void mainbox::content2::img_area::on_realize()
+{
+    set_realized();
+    if(!m_refGdkWindow)
+    {
+        //Create the GdkWindow:
+
+        GdkWindowAttr attributes;
+        memset(&attributes, 0, sizeof(attributes));
+
+        Gtk::Allocation allocation = get_allocation();
+
+        //Set initial position and size of the Gdk::Window:
+        attributes.x = allocation.get_x();
+        attributes.y = allocation.get_y();
+        attributes.width = allocation.get_width();
+        attributes.height = allocation.get_height();
+
+        attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK | Gdk::ENTER_NOTIFY_MASK | Gdk::LEAVE_NOTIFY_MASK | Gdk::BUTTON_PRESS_MASK | Gdk::BUTTON_RELEASE_MASK;
+        attributes.window_type = GDK_WINDOW_CHILD;
+        attributes.wclass = GDK_INPUT_OUTPUT;
+
+        m_refGdkWindow = Gdk::Window::create(get_parent_window(), &attributes,
+                                             GDK_WA_X | GDK_WA_Y);
+        set_window(m_refGdkWindow);
+
+        //make the widget receive events
+        m_refGdkWindow->set_user_data(gobj());
+    }
+
+
 }
 
 bool mainbox::content2::img_area::on_enter_notify_event(GdkEventCrossing *crossing_event)
@@ -80,37 +111,17 @@ bool mainbox::content2::img_area::on_enter_notify_event(GdkEventCrossing *crossi
 
 }
 
-
-void mainbox::content2::img_area::on_realize()
+void mainbox::content2::img_area::on_size_allocate(Gtk::Allocation &allocation)
 {
-    set_realized();
-    std::cout << "Realized" << std::endl;
-    if(!m_refGdkWindow)
+    //Do something with the space that we have actually been given:
+    //(We will not be given heights or widths less than we have requested, though
+    //we might get more)
+    //Use the offered allocation for this container:
+    set_allocation(allocation);
+
+    if(m_refGdkWindow)
     {
-        //Create the GdkWindow:
-
-        GdkWindowAttr attributes;
-        memset(&attributes, 0, sizeof(attributes));
-
-        Gtk::Allocation allocation = get_allocation();
-
-        //Set initial position and size of the Gdk::Window:
-        attributes.x = allocation.get_x();
-        attributes.y = allocation.get_y();
-        attributes.width = allocation.get_width();
-        attributes.height = allocation.get_height();
-
-        attributes.event_mask = get_events () | Gdk::EXPOSURE_MASK | Gdk::ENTER_NOTIFY_MASK;
-        attributes.window_type = GDK_WINDOW_CHILD;
-        attributes.wclass = GDK_INPUT_OUTPUT;
-
-        m_refGdkWindow = Gdk::Window::create(get_parent_window(), &attributes,
-                                             GDK_WA_X | GDK_WA_Y);
-        set_window(m_refGdkWindow);
-
-        //make the widget receive events
-        m_refGdkWindow->set_user_data(gobj());
+        m_refGdkWindow->move_resize( allocation.get_x(), allocation.get_y(),
+                                     allocation.get_width(), allocation.get_height() );
     }
-
-
 }

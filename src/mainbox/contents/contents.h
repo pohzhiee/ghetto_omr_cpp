@@ -15,6 +15,7 @@ protected:
 };
 
 
+#include "content2/content2_imgbox.h"
 class mainbox::content2 : public Gtk::Box
 {
 public:
@@ -23,11 +24,14 @@ protected:
     class worktools;
     worktools *worktools_box;
     class img_area;
-    img_area *img_box;
+    img_area *imgarea;
+    Gtk::Box img_box1,img_box2;
+    content2_imgbox img_box1a;
 
     Glib::RefPtr<Gdk::Window> window;
 
 };
+
 
 
 class mainbox::content3 : public Gtk::Box
