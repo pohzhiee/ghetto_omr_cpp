@@ -1,0 +1,21 @@
+#startup_buttons {
+    background-image: -gtk-gradient (linear,
+    left top, left bottom,
+    from (shade (#ff6666, 0.9)),
+    color-stop (0.8, shade(#ff8888,1.0)),
+    to (shade (#ff8888, 1.0)));
+    font-size: 50px;
+    color:#ffffff;
+}
+
+#startup_buttons:hover {
+    background-image: -gtk-gradient (
+    linear,
+    left top, left bottom,
+    from (shade (#ff0000, 1.00)),
+    to (shade (#ffaaaa, 0.9)));
+}
+
+#image_box {
+    background: #eeeeff;
+}

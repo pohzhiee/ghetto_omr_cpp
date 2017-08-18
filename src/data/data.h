@@ -12,6 +12,8 @@
 namespace data {
     extern int data1, data2, data3;
     extern std::string str1,str2,str3;
+    void set_val(int a,int b,int c);
+    void print_val();
 };
 
 
