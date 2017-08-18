@@ -22,8 +22,10 @@ public:
 protected:
     class worktools;
     worktools *worktools_box;
-    class imgbox;
-    imgbox *img_box;
+    class img_area;
+    img_area *img_box;
+
+    Glib::RefPtr<Gdk::Window> window;
 
 };
 
