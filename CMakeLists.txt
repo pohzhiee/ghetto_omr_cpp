@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.9)
-project(gtk_main)
+project(ghetto_omr)
 
 set(CMAKE_CXX_STANDARD 11)
 
@@ -12,7 +12,7 @@ link_directories(
 include_directories(
         ${GTKMM_INCLUDE_DIRS}  )
 add_subdirectory(src)
-add_executable(gtk_main ${SOURCE} ${HEADERS})
+add_executable(ghetto_omr ${SOURCE} ${HEADERS})
 
-target_link_libraries(gtk_main
+target_link_libraries(ghetto_omr
         ${GTKMM_LIBRARIES}  )
