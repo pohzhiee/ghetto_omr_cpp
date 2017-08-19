@@ -2,40 +2,39 @@
 // Created by poh on 8/18/17.
 //
 
-#include "content2_imgbox.h"
+#include "img_border_box.h"
 
 //credits to
 //https://developer.gnome.org/gtkmm-tutorial/stable/sec-custom-containers.html.en
 
-content2_imgbox::content2_imgbox() : child(nullptr)
+img_border_box::img_border_box() : child(nullptr)
 {
-    set_name("image_box");
+    set_name("content2_image_border");
     set_has_window(FALSE);
     set_redraw_on_allocate(FALSE);
 //    set_child_visible(TRUE);
-    set_orientation(Gtk::ORIENTATION_HORIZONTAL);
 };
 
-content2_imgbox::~content2_imgbox()
+img_border_box::~img_border_box()
 {
     if(child)
         child->unparent();
 }
 
-void content2_imgbox::set_child_widget(Gtk::Widget &child_one)
+void img_border_box::set_child_widget(Gtk::Widget &child_one)
 {
     child = &child_one;
     child->set_parent(*this);
 }
 
 
-Gtk::SizeRequestMode content2_imgbox::get_request_mode_vfunc() const
+Gtk::SizeRequestMode img_border_box::get_request_mode_vfunc() const
 {
     return Gtk::SIZE_REQUEST_WIDTH_FOR_HEIGHT;
 }
 
 
-void content2_imgbox::get_preferred_width_vfunc(int& minimum_width, int& natural_width) const
+void img_border_box::get_preferred_width_vfunc(int& minimum_width, int& natural_width) const
 {
     int child_minimum_width = 0;
     int child_natural_width = 0;
@@ -49,7 +48,7 @@ void content2_imgbox::get_preferred_width_vfunc(int& minimum_width, int& natural
 }
 
 
-void content2_imgbox::get_preferred_height_for_width_vfunc(int width, int& minimum_height, int& natural_height) const
+void img_border_box::get_preferred_height_for_width_vfunc(int width, int& minimum_height, int& natural_height) const
 {
     int child_minimum_height = 0;
     int child_natural_height = 0;
@@ -69,7 +68,7 @@ void content2_imgbox::get_preferred_height_for_width_vfunc(int width, int& minim
 }
 
 
-void content2_imgbox::get_preferred_height_vfunc(int& minimum_height, int& natural_height) const
+void img_border_box::get_preferred_height_vfunc(int& minimum_height, int& natural_height) const
 {
     int child_minimum_height = 0;
     int child_natural_height = 0;
@@ -87,7 +86,7 @@ void content2_imgbox::get_preferred_height_vfunc(int& minimum_height, int& natur
     natural_height = nvis_children * child_natural_height;
 }
 
-void content2_imgbox::get_preferred_width_for_height_vfunc(int height,
+void img_border_box::get_preferred_width_for_height_vfunc(int height,
                                                        int& minimum_width, int& natural_width) const
 {
     int child_minimum_width = 0;
@@ -112,7 +111,7 @@ void content2_imgbox::get_preferred_width_for_height_vfunc(int height,
     natural_width = child_natural_width;
 }
 
-void content2_imgbox::on_size_allocate(Gtk::Allocation& allocation)
+void img_border_box::on_size_allocate(Gtk::Allocation& allocation)
 {
     //Do something with the space that we have actually been given:
     //(We will not be given heights or widths less than we have requested, though
@@ -168,14 +167,14 @@ void content2_imgbox::on_size_allocate(Gtk::Allocation& allocation)
         child_allocation_one.set_height(0);
 }
 
-void content2_imgbox::forall_vfunc(gboolean, GtkCallback callback, gpointer callback_data)
+void img_border_box::forall_vfunc(gboolean, GtkCallback callback, gpointer callback_data)
 {
     if(child)
         callback(child->gobj(), callback_data);
 
 }
 
-void content2_imgbox::on_add(Gtk::Widget* inp_child)
+void img_border_box::on_add(Gtk::Widget* inp_child)
 {
     if(!inp_child)
     {
@@ -184,7 +183,7 @@ void content2_imgbox::on_add(Gtk::Widget* inp_child)
     }
 }
 
-void content2_imgbox::on_remove(Gtk::Widget* inp_child)
+void img_border_box::on_remove(Gtk::Widget* inp_child)
 {
     if(inp_child)
     {
@@ -207,7 +206,7 @@ void content2_imgbox::on_remove(Gtk::Widget* inp_child)
     }
 }
 
-GType content2_imgbox::child_type_vfunc() const
+GType img_border_box::child_type_vfunc() const
 {
     //If there is still space for one widget, then report the type of widget that
     //may be added.

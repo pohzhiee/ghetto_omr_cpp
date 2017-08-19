@@ -6,8 +6,8 @@
 #include <iostream>
 
 //constructor
-mainbox::content2::worktools::worktools(content2 *inp){
-    pContent = inp;
+worktools::worktools(img_area *inp){
+    imgarea = inp;
     tool_icon_path = {icon_dir+"alienarena.svg",icon_dir+"facebook.svg",icon_dir+"live.svg",icon_dir+"darktable.svg"};
     //define toolbuttons
     //toolbutton1
@@ -18,26 +18,25 @@ mainbox::content2::worktools::worktools(content2 *inp){
         toolbtns.push_back(Gtk::RadioButton());
         toolbtns[i].set_image(tool_btn_img[i]);
         toolbtns[i].set_mode(FALSE);
-        toolbtns[i].signal_toggled().connect(sigc::bind<int>(sigc::mem_fun(*this,&mainbox::content2::worktools::tool_func),i));
+        toolbtns[i].signal_toggled().connect(sigc::bind<int>(sigc::mem_fun(*this,&worktools::tool_func),i));
         //note that both toggled and clicked event activate when state of button change, i.e. active->inactive or inactive->active
         if (i !=0){toolbtns[i].join_group(toolbtns[0]);}
         add_to_grid(&toolbtns[i],i);
     }
 
-    pack_start(toolgrid,Gtk::PackOptions::PACK_SHRINK);
 }
 
 //destructor
-mainbox::content2::worktools::~worktools()
+worktools::~worktools()
 {
 }
 
-void mainbox::content2::worktools::add_to_grid(Gtk::RadioButton *inp_tool_btn,int &tool_count)
+void worktools::add_to_grid(Gtk::RadioButton *inp_tool_btn,int &tool_count)
 {
-    toolgrid.attach(*inp_tool_btn,tool_count%tool_no_cols,tool_count/tool_no_cols,1,1);
+    attach(*inp_tool_btn,tool_count%tool_no_cols,tool_count/tool_no_cols,1,1);
 }
 
-void mainbox::content2::worktools::tool_func(int &tool_count)
+void worktools::tool_func(int &tool_count)
 {
     std::cout << "ASD" << tool_count << std::endl;
 }

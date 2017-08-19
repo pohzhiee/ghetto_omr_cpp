@@ -9,8 +9,9 @@ namespace data {
     int data1 = -1;
     int data2 = -1;
     int data3 = -1;
+    int content2_img_siz = 100; //in terms of percent
     std::string str1 = "QWE",str2 = "ASD",str3 = "ZXC";
-    std::vector<selection_box> layers;
+    std::vector<selection_box> selections,selections_abs;
 
 };
 
@@ -33,4 +34,10 @@ selection_box::selection_box(gdouble xin, gdouble xfin, gdouble yin, gdouble yfi
     x_final = xfin;
     y_init = yin;
     y_final = yfin;
+};
+
+
+selection_box selection_box:: operator*(gdouble scale)
+{
+    return selection_box(x_init*scale,x_final*scale,y_init*scale,y_final*scale);
 };

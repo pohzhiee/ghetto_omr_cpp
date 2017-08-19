@@ -2,23 +2,24 @@
 // Created by poh on 8/18/17.
 //
 
-#ifndef GTK_MAIN_WORKTOOLS_H
+#ifndef GTK_MAIN_WORKTOOLS_HBox
 #define GTK_MAIN_WORKTOOLS_H
 
-#include "../contents.h"
 #include <gtkmm/grid.h>
+#include <gtkmm/box.h>
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/image.h>
 #include <gdkmm/pixbuf.h>
+#include "../image/img_area.h"
 
 
-class mainbox::content2::worktools : public Gtk::Box
+class worktools : public Gtk::Grid
 {
 public:
-    worktools(content2 *inp);
+    worktools(img_area *inp);
     virtual ~worktools();
 protected:
-    content2 *pContent;
+    img_area *imgarea;
     const unsigned int tool_no_cols = 2;
     const int tool_width=50,tool_height = 50;
 
@@ -31,8 +32,6 @@ protected:
 
     void add_to_grid(Gtk::RadioButton *inp_tool_btn, int &tool_count);
     void tool_func(int &tool_count);
-
-    Gtk::Box layerbox;
 };
 
 

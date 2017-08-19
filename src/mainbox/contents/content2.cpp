@@ -3,23 +3,23 @@
 //
 
 #include "contents.h"
-#include "content2/worktools.h"
-#include "content2/img_area.h"
 
 mainbox::content2::content2(mainbox *pMainBox){
     set_orientation(Gtk::ORIENTATION_HORIZONTAL);
-    worktools_box = new worktools(this);
-    imgarea = new img_area(this);
-    img_box1.set_child_widget(*imgarea);
-    img_box1.set_valign(Gtk::ALIGN_CENTER);
 
+    imgarea = Gtk::manage(new img_area());
 
-    img_box2 = Gtk::Box();
-    img_box2.pack_start(img_box1,Gtk::PackOptions::PACK_EXPAND_PADDING);
-    img_box2.set_name("img_box2");
+    worktools_box =  Gtk::manage(new worktools(imgarea));
+    img_scroll =  Gtk::manage(new img_scrollable(imgarea));
+    btm_bar = Gtk::manage(new bottombar(imgarea));
 
-    pack_start(img_box2,Gtk::PackOptions::PACK_EXPAND_WIDGET);
-    pack_start(*worktools_box,Gtk::PackOptions::PACK_SHRINK);
+    img_box = Gtk::manage(new Gtk::Box());
+    img_box->set_orientation(Gtk::ORIENTATION_VERTICAL);
+    img_box->pack_start(*img_scroll,Gtk::PACK_EXPAND_WIDGET);
+    img_box->pack_start(*btm_bar,Gtk::PACK_SHRINK);
+
+    pack_start(*img_box,Gtk::PACK_EXPAND_WIDGET);
+    pack_start(*worktools_box,Gtk::PACK_SHRINK);
 };
 
 

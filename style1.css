@@ -17,7 +17,7 @@
     /*border-color: #000000;*/
 }
 
-#image_box {
+#content2_image_border {
     background: #ffff00;
     border-width: 2px;
     border-style: dotted;
@@ -25,20 +25,8 @@
 }
 
 
-#img_box {
-    background: #0000ff;
-    /*color: transparent;*/
-    /*border-width: 10px;*/
-    /*border-style: dotted;*/
-    /*border-color: #000000;*/
-}
 
-
-
-#img_box2 {
-    background: #ff00ff;
-    border-width: 5px;
-    border-style: dotted;
-    border-color: #000000;
+#content2_img_padding {
+    background: rgba(200,200,255,0.9);
     /*color: transparent;*/
 }

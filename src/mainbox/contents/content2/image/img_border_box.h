@@ -7,11 +7,11 @@
 
 #include <gtkmm/box.h>
 
-class content2_imgbox: public Gtk::Box
+class img_border_box: public Gtk::Box
 {
 public:
-    content2_imgbox();
-    virtual ~content2_imgbox();
+    img_border_box();
+    virtual ~img_border_box();
 
     void set_child_widget(Gtk::Widget &child);
 protected:
