@@ -10,11 +10,11 @@ mainbox::content2::img_area::img_area(content2 *pinp)
     x_init = 0;
     x_change = 0;
     x_final = 0;
-    x_curr = -1;
+    x_curr = 0;
     y_init = 0;
     y_change = 0;
     y_final = 0;
-    y_curr = -1;
+    y_curr = 0;
     time_init =0;
     time_change = 0;
     time_final = 0;
@@ -49,7 +49,7 @@ mainbox::content2::img_area::~img_area()
 
 bool mainbox::content2::img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    if (x_curr!=-1 && y_curr!=-1)
+    if (x_init!=0 && y_init!=0)
     {
 
         Gtk::Allocation allocation = get_allocation();
@@ -62,12 +62,11 @@ bool mainbox::content2::img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& c
 
         cr->paint();
 
-        cr->save();
+//        cr->save();
         cr->set_line_width(2);
         cr->set_source_rgb(0,0,0);
         if (data::layers.size() !=0){draw_all_rect(cr);}
-        cr->stroke();
-        cr->restore();
+//        cr->restore();
         cr->save();
         cr->set_line_width(2);
         cr->set_source_rgb(0,0,0);
@@ -92,6 +91,13 @@ bool mainbox::content2::img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& c
         Gdk::Cairo::set_source_pixbuf(cr, m_image, (height - m_image->get_height()) / 2,
                                       (width - m_image->get_width()) / 2);
         cr->paint();
+
+        if (data::layers.size() !=0)
+        {
+            cr->set_line_width(2);
+            cr->set_source_rgb(0,0,0);
+            draw_all_rect(cr);
+        }
 
         return true;
     }
@@ -234,7 +240,6 @@ void mainbox::content2::img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Conte
         cr->line_to(data::layers[i].x_final,data::layers[i].y_final);
         cr->line_to(data::layers[i].x_final,data::layers[i].y_init);
         cr->line_to(data::layers[i].x_init,data::layers[i].y_init);
-//        std::cout << data::layers[i].x_init << '\t' << data::layers[i].x_final;
     }
-    std::cout << "DRAWN";
+    cr->stroke();
 };
