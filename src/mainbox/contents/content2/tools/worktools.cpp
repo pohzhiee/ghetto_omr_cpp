@@ -6,7 +6,8 @@
 #include <iostream>
 
 //constructor
-worktools::worktools(img_area *inp){
+worktools::worktools(img_area *inp, bottombar *pbottom){
+    pbtmbar = pbottom;
     imgarea = inp;
     tool_icon_path = {icon_dir+"alienarena.svg",icon_dir+"facebook.svg",icon_dir+"live.svg",icon_dir+"darktable.svg"};
     //define toolbuttons
@@ -36,7 +37,8 @@ void worktools::add_to_grid(Gtk::RadioButton *inp_tool_btn,int &tool_count)
     attach(*inp_tool_btn,tool_count%tool_no_cols,tool_count/tool_no_cols,1,1);
 }
 
-void worktools::tool_func(int &tool_count)
+void worktools::tool_func(int tool_count)
 {
+    pbtmbar->set_instruction(tool_count);
     std::cout << "ASD" << tool_count << std::endl;
 }

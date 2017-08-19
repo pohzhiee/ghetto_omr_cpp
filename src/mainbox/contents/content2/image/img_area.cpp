@@ -66,19 +66,29 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 
 void img_area::resize_img()
 {
-    img_scale = ((double) data::content2_img_siz)/100; //1 is 100%, 2 is 200%
+    img_scale = (data::content2_img_siz)/100; //1 is 100%, 2 is 200%
     std::cout << img_scale << std::endl;
     for (int i = 0;i<data::selections.size();i++)
     {
         data::selections[i] = data::selections_abs[i] * img_scale;
     }
 
+    try {
+        m_image = Gdk::Pixbuf::create_from_file("../img_data/test1.jpg");
+    }
+    catch (const Gio::ResourceError &ex) {
+        std::cerr << "ResourceError: " << ex.what() << std::endl;
+        std::cerr << "Please re-check file name and path" << std::endl;
+    }
+    catch (const Gdk::PixbufError &ex) {
+        std::cerr << "PixbufError: " << ex.what() << std::endl;
+    }
     if (m_image)
     {
-        long new_height = lround(img_height * img_scale);
-        long new_width = lround(img_width * img_scale);
-        m_image = m_image->scale_simple((int) new_width,(int) new_height,Gdk::INTERP_BILINEAR);
-        set_size_request((int) new_width, (int) new_height);
+        int new_height = (int) round(img_height * img_scale);
+        int new_width = (int) round(img_width * img_scale);
+        m_image = m_image->scale_simple( new_width, new_height,Gdk::INTERP_BILINEAR);
+        set_size_request(new_width, new_height);
     }
     queue_resize();
 

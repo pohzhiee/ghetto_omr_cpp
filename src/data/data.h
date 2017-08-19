@@ -24,7 +24,7 @@ namespace data {
     extern int data1, data2, data3;
     extern std::vector<selection_box> selections,selections_abs;
     extern std::string str1,str2,str3;
-    extern int content2_img_siz; // in terms of percent
+    extern double content2_img_siz; // in terms of percent
     void set_val(int a,int b,int c);
     void print_val();
 };

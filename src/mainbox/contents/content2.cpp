@@ -9,9 +9,9 @@ mainbox::content2::content2(mainbox *pMainBox){
 
     imgarea = Gtk::manage(new img_area());
 
-    worktools_box =  Gtk::manage(new worktools(imgarea));
-    img_scroll =  Gtk::manage(new img_scrollable(imgarea));
     btm_bar = Gtk::manage(new bottombar(imgarea));
+    worktools_box =  Gtk::manage(new worktools(imgarea,btm_bar));
+    img_scroll =  Gtk::manage(new img_scrollable(imgarea));
 
     img_box = Gtk::manage(new Gtk::Box());
     img_box->set_orientation(Gtk::ORIENTATION_VERTICAL);

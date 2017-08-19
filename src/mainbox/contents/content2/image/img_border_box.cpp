@@ -11,7 +11,7 @@ img_border_box::img_border_box() : child(nullptr)
 {
     set_name("content2_image_border");
     set_has_window(FALSE);
-    set_redraw_on_allocate(FALSE);
+    set_redraw_on_allocate(true);
 //    set_child_visible(TRUE);
 };
 

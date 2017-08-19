@@ -9,7 +9,7 @@ namespace data {
     int data1 = -1;
     int data2 = -1;
     int data3 = -1;
-    int content2_img_siz = 100; //in terms of percent
+    double content2_img_siz = 100; //in terms of percent
     std::string str1 = "QWE",str2 = "ASD",str3 = "ZXC";
     std::vector<selection_box> selections,selections_abs;
 
