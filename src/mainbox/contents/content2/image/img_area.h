@@ -12,16 +12,17 @@
 #include <gdkmm/event.h>
 #include <gdkmm/cursor.h>
 #include <glibmm/fileutils.h>
-#include "../../../../data/data.h"
+#include "../../content2.h"
 
 class img_area : public Gtk::DrawingArea
 {
 public:
-    img_area();
+    img_area(content2 *p_inp);
     virtual ~img_area();
 
     void resize_img();
 protected:
+    content2 *p_content2;
     //temp data
     guint32 time_init,time_final,time_change;
     gdouble x_init, x_final,x_curr;

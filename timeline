@@ -1,10 +1,4 @@
 goals:
-add scaling
-link one of the buttons to draw rectangle, others do nothing now
-store coordinates in % width and height instead of absolute
-adjust coordinates of rectangles based on scaling
-
-ETA:end of 19/8
 
 add dialog after rectangle is drawn, store to data
 complete layer box using data from dialog

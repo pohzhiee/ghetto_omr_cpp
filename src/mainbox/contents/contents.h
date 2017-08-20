@@ -16,24 +16,6 @@ protected:
 };
 
 
-#include "content2/image/img_area.h"
-#include "content2/image/img_scrollable.h"
-#include "content2/image/bottombar.h"
-#include "content2/tools/worktools.h"
-class mainbox::content2 : public Gtk::Box
-{
-public:
-    content2(mainbox *pMainBox);
-protected:
-    worktools *worktools_box;
-    img_area *imgarea;
-    img_scrollable *img_scroll;
-    bottombar *btm_bar;
-
-    Glib::RefPtr<Gdk::Window> window;
-    Gtk::Box *img_box;
-
-};
 
 
 

@@ -15,17 +15,27 @@ img_border_box::img_border_box() : child(nullptr)
 //    set_child_visible(TRUE);
 };
 
+img_border_box::img_border_box(Gtk::Widget &child_one) : child(nullptr)
+{
+    child = &child_one;
+    child->set_parent(*this);
+    set_name("content2_image_border");
+    set_has_window(FALSE);
+    set_redraw_on_allocate(true);
+//    set_child_visible(TRUE);
+};
+
 img_border_box::~img_border_box()
 {
     if(child)
         child->unparent();
 }
 
-void img_border_box::set_child_widget(Gtk::Widget &child_one)
-{
-    child = &child_one;
-    child->set_parent(*this);
-}
+//void img_border_box::set_child_widget(Gtk::Widget &child_one)
+//{
+//    child = &child_one;
+//    child->set_parent(*this);
+//}
 
 
 Gtk::SizeRequestMode img_border_box::get_request_mode_vfunc() const
@@ -198,7 +208,7 @@ void img_border_box::on_remove(Gtk::Widget* inp_child)
 
         if(found)
         {
-            child->unparent();
+            inp_child->unparent();
 
             if(visible)
                 queue_resize();

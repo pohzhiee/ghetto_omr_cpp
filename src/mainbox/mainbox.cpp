@@ -32,7 +32,7 @@ void mainbox::set_content1()
 void mainbox::set_content2()
 {
     remove(*curr_content);
-    content2_box = new content2(this);
+    content2_box = new content2();
     pack_start(*content2_box,Gtk::PackOptions::PACK_EXPAND_WIDGET);
     curr_content = content2_box;
     show_all_children();

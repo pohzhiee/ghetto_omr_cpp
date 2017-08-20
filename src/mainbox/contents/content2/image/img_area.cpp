@@ -5,9 +5,10 @@
 #include "img_area.h"
 #include <iostream>
 //-----Constructors and destructors start--------
+//
 
-//default constructor
-img_area::img_area() {
+img_area::img_area(content2 *p_inp) {
+    p_content2 = p_inp;
     x_init = 0;
     x_final = 0;
     x_curr = 0;
@@ -37,9 +38,9 @@ img_area::img_area() {
 // request for image original size.
     if (m_image)
     {
-    img_height = m_image->get_height();
-    img_width = m_image->get_width();
-    set_size_request(img_width, img_height);
+        img_height = m_image->get_height();
+        img_width = m_image->get_width();
+        set_size_request(img_width, img_height);
     }
 }
 
