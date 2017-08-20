@@ -18,7 +18,7 @@ img_area::img_area(content2 *p_inp) {
     time_init = 0;
     time_change = 0;
     time_final = 0;
-    img_scale = 1;
+    img_scale = data::content2_img_siz/100;
 
     set_vexpand(FALSE);
     set_hexpand(FALSE);
@@ -40,7 +40,11 @@ img_area::img_area(content2 *p_inp) {
     {
         img_height = m_image->get_height();
         img_width = m_image->get_width();
-        set_size_request(img_width, img_height);
+        int new_height = (int) round(img_height * img_scale);
+        int new_width = (int) round(img_width * img_scale);
+        m_image = m_image->scale_simple( new_width, new_height,Gdk::INTERP_BILINEAR);
+        set_size_request(new_width, new_height);
+        queue_resize();
     }
 }
 
@@ -68,7 +72,6 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 void img_area::resize_img()
 {
     img_scale = (data::content2_img_siz)/100; //1 is 100%, 2 is 200%
-    std::cout << img_scale << std::endl;
     for (int i = 0;i<data::selections.size();i++)
     {
         data::selections[i] = data::selections_abs[i] * img_scale;
@@ -90,8 +93,8 @@ void img_area::resize_img()
         int new_width = (int) round(img_width * img_scale);
         m_image = m_image->scale_simple( new_width, new_height,Gdk::INTERP_BILINEAR);
         set_size_request(new_width, new_height);
+        queue_resize();
     }
-    queue_resize();
 
 }
 
@@ -108,6 +111,7 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
         const int height = allocation.get_height();
         // Draw the image in the middle of the drawing area, or (if the image is
         // larger than the drawing area) draw the middle part of the image.
+//        Gdk::Cairo::set_source_pixbuf(cr, m_image, 0,0);
         Gdk::Cairo::set_source_pixbuf(cr, m_image, (height - m_image->get_height()) / 2,
                                       (width - m_image->get_width()) / 2);
 

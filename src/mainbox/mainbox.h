@@ -30,6 +30,7 @@ protected:
     content4 *content4_box;
 
     Gtk::Widget *curr_content;
+    Gtk::Widget **p_curr;
     content2 *content2_box;
 
     void set_content1();
