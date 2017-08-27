@@ -11,5 +11,6 @@ set(SOURCE
 set(HEADERS
         ${HEADERS}
         ${CMAKE_CURRENT_SOURCE_DIR}/contents.h
+        ${CMAKE_CURRENT_SOURCE_DIR}/content2.h
         PARENT_SCOPE
         )

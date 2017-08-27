@@ -11,9 +11,8 @@ class img_border_box: public Gtk::Box
 {
 public:
     img_border_box();
+    img_border_box(Gtk::Widget &child_one);
     virtual ~img_border_box();
-
-    void set_child_widget(Gtk::Widget &child);
 protected:
     //Parameters
     const int border_width = 3;

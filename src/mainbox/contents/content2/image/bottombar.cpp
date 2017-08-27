@@ -7,9 +7,9 @@
 
 
 
-bottombar::bottombar(img_area *pimg_area)
+bottombar::bottombar(content2 *p_inp)
 {
-    pimgarea = pimg_area;
+    p_content2 = p_inp;
     guide_label = Gtk::Label("ASD");
     //settings for zoom in button
     zoom_in_btn = Gtk::Button();
@@ -67,7 +67,7 @@ void bottombar::set_text_proper()
         this->size_entry.set_text(percent_to_string(inp_int));
         text_buffer = text;
         data::content2_img_siz = inp_int;
-        pimgarea -> resize_img();
+        p_content2 -> resize_img();
     }
 }
 
@@ -75,7 +75,7 @@ void bottombar::zoom_in()
 {
     data::content2_img_siz *=2;
     this->size_entry.set_text(percent_to_string(data::content2_img_siz));
-    pimgarea -> resize_img();
+    p_content2 -> resize_img();
 
 }
 
@@ -83,7 +83,7 @@ void bottombar::zoom_out()
 {
     data::content2_img_siz /=2;
     this->size_entry.set_text(percent_to_string(data::content2_img_siz));
-    pimgarea -> resize_img();
+    p_content2 -> resize_img();
 
 }
 

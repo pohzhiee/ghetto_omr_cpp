@@ -1,0 +1,12 @@
+goals:
+
+add dialog after rectangle is drawn, store to data
+complete layer box using data from dialog
+
+ETA: end of 20/8
+
+port opencv functions to c++
+ETA: end of 22/8
+
+debugging and stuff
+ETA: end of 31/8

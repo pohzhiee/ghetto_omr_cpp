@@ -10,18 +10,16 @@
 #include <gtkmm/radiobutton.h>
 #include <gtkmm/image.h>
 #include <gdkmm/pixbuf.h>
-#include "../image/img_area.h"
-#include "../image/bottombar.h"
+#include "../../content2.h"
 
 
 class worktools : public Gtk::Grid
 {
 public:
-    worktools(img_area *inp, bottombar *p_btmbar);
+    worktools(content2 *p_inp);
     virtual ~worktools();
 protected:
-    img_area *imgarea;
-    bottombar *pbtmbar;
+    content2 *p_content2;
     const unsigned int tool_no_cols = 2;
     const int tool_width=50,tool_height = 50;
 

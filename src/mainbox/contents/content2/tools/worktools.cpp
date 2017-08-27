@@ -3,12 +3,10 @@
 //
 
 #include "worktools.h"
-#include <iostream>
 
 //constructor
-worktools::worktools(img_area *inp, bottombar *pbottom){
-    pbtmbar = pbottom;
-    imgarea = inp;
+worktools::worktools(content2 *p_inp){
+    p_content2 = p_inp;
     tool_icon_path = {icon_dir+"alienarena.svg",icon_dir+"facebook.svg",icon_dir+"live.svg",icon_dir+"darktable.svg"};
     //define toolbuttons
     //toolbutton1
@@ -39,6 +37,5 @@ void worktools::add_to_grid(Gtk::RadioButton *inp_tool_btn,int &tool_count)
 
 void worktools::tool_func(int tool_count)
 {
-    pbtmbar->set_instruction(tool_count);
-    std::cout << "ASD" << tool_count << std::endl;
+    p_content2->set_instruction_btm(tool_count);
 }

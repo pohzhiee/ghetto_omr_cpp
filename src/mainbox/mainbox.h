@@ -8,6 +8,7 @@
 #include <gtkmm/box.h>
 #include <gtkmm/label.h>
 #include <gtkmm/button.h>
+#include "contents/content2.h"
 
 
 
@@ -23,14 +24,14 @@ protected:
 
     class content1;
     content1 *content1_box;
-    class content2;
-    content2 *content2_box;
     class content3;
     content3 *content3_box;
     class content4;
     content4 *content4_box;
 
     Gtk::Widget *curr_content;
+    Gtk::Widget **p_curr;
+    content2 *content2_box;
 
     void set_content1();
     void set_content2();
