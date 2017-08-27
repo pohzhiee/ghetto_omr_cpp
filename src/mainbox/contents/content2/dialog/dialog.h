@@ -19,7 +19,7 @@ public:
     virtual ~dialog();
 
     //to access current set of parameters (e.g. numerical)
-    std::shared_ptr<dialog_qn> curr_set;
+    dialog_qn* curr_set;
 
     //warning message when input parameters dont make sense
     std::shared_ptr<Gtk::MessageDialog> p_warning;
@@ -41,12 +41,12 @@ protected:
     Gtk::Label response_type_label;
 
     //widgets for getting response parameters
-    std::unique_ptr<mcq_class> mcq1;
-    std::unique_ptr<numerical_class> num1;
-    std::unique_ptr<marker_class> marker1;
+    mcq_class *mcq;
+    numerical_class *num;
+    marker_class *marker;
 
     //list of derived classes for getting response parameters
-    std::vector<std::shared_ptr<dialog_qn>> content_arr;
+    std::vector<dialog_qn*> content_arr;
 
 };
 

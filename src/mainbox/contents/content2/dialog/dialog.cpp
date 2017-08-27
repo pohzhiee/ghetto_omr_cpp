@@ -24,12 +24,9 @@ dialog::dialog()
     p_content_vbox = get_content_area();
 
     //Create array of possible selection objects
-    std::shared_ptr<mcq_class> mcq = std::make_shared<mcq_class>();
-    std::shared_ptr<numerical_class> num = std::make_shared<numerical_class>();
-    std::shared_ptr<marker_class> marker = std::make_shared<marker_class>();
-    content_arr.push_back(mcq);
-    content_arr.push_back(num);
-    content_arr.push_back(marker);
+    content_arr.push_back(Gtk::manage(new mcq_class()));
+    content_arr.push_back(Gtk::manage(new numerical_class()));
+    content_arr.push_back(Gtk::manage(new marker_class()));
 
     //Create combo box for type selection (i.e. numerical answer, surface marker etc)
     response_type = Gtk::ComboBoxText(false);
