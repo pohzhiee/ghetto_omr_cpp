@@ -13,7 +13,7 @@ bottombar::bottombar(content2 *p_inp)
     guide_label = Gtk::Label("ASD");
     //settings for zoom in button
     zoom_in_btn = Gtk::Button();
-    zoom_in_pix = Gdk::Pixbuf::create_from_file("../icons/plus.svg",20,20,TRUE);
+    zoom_in_pix = Gdk::Pixbuf::create_from_file("../icons/zoom-in.svg",20,20,TRUE);
     zoom_in_img = Gtk::Image(zoom_in_pix);
     zoom_in_btn.set_image(zoom_in_img);
     zoom_in_btn.signal_clicked().connect(sigc::mem_fun(*this,&bottombar::zoom_in));
@@ -21,7 +21,7 @@ bottombar::bottombar(content2 *p_inp)
 
     //settings for zoom out button
     zoom_out_btn = Gtk::Button();
-    zoom_out_pix = Gdk::Pixbuf::create_from_file("../icons/minus.svg",20,20,TRUE);
+    zoom_out_pix = Gdk::Pixbuf::create_from_file("../icons/zoom-out.svg",20,20,TRUE);
     zoom_out_img = Gtk::Image(zoom_out_pix);
     zoom_out_btn.set_image(zoom_out_img);
     zoom_out_btn.signal_clicked().connect(sigc::mem_fun(*this,&bottombar::zoom_out));

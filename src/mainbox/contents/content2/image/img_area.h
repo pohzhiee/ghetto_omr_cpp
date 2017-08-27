@@ -14,15 +14,19 @@
 #include <glibmm/fileutils.h>
 #include "../dialog/dialog.h"
 #include "../../../../data/data.h"
+#include "../../content2.h"
 
 class img_area : public Gtk::DrawingArea
 {
 public:
-    img_area();
+    img_area(content2 *p_content2);
     virtual ~img_area();
 
     void resize_img();
 protected:
+    //parent pointer
+    content2 *p_content2;
+
     //temp data
     guint32 time_init,time_final,time_change;
     coords coords_init,coords_final,coords_current;

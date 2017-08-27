@@ -7,7 +7,8 @@
 //-----Constructors and destructors start--------
 
 //default constructor
-img_area::img_area() {
+img_area::img_area(content2 *p_content2_input) {
+    p_content2 = p_content2_input;
     time_init = 0;
     time_change = 0;
     time_final = 0;
