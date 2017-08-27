@@ -30,3 +30,18 @@
     background: rgba(200,200,255,0.9);
     /*color: transparent;*/
 }
+
+
+#content2_dialog_wrong_value {
+    background-image: -gtk-gradient (
+    linear,
+    left top, left bottom,
+    from (shade (#ff9999, 0.9)),
+to (shade (#ff9999, 1.05)));
+    /*border-color: #000000;*/
+}
+GtkComboBoxText GtkEntry,#content2_dialog_default {
+    background-image: -gtk-gradient(linear, left top, left bottom,
+    from (shade (#ffffff, 1.0)),
+to (shade (#ffffff,0.95)));
+}

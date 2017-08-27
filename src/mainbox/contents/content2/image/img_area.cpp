@@ -8,16 +8,10 @@
 
 //default constructor
 img_area::img_area() {
-    x_init = 0;
-    x_final = 0;
-    x_curr = 0;
-    y_init = 0;
-    y_final = 0;
-    y_curr = 0;
     time_init = 0;
     time_change = 0;
     time_final = 0;
-    img_scale = 1;
+    img_scale = (data::content2_img_siz)/100;
 
     set_vexpand(FALSE);
     set_hexpand(FALSE);
@@ -37,9 +31,12 @@ img_area::img_area() {
 // request for image original size.
     if (m_image)
     {
-    img_height = m_image->get_height();
-    img_width = m_image->get_width();
-    set_size_request(img_width, img_height);
+        img_height = m_image->get_height();
+        img_width = m_image->get_width();
+        int new_height = (int) round(img_height * img_scale);
+        int new_width = (int) round(img_width * img_scale);
+        m_image = m_image->scale_simple( new_width, new_height,Gdk::INTERP_BILINEAR);
+        set_size_request(new_width, new_height);
     }
 }
 
@@ -53,13 +50,16 @@ img_area::~img_area()
 //custom functions start
 void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    for(int i=0;i<data::selections.size();i++)
+    for(int i=0;i<selection_abs.size();i++)
     {
-        cr->move_to(data::selections[i].x_init,data::selections[i].y_init);
-        cr->line_to(data::selections[i].x_init,data::selections[i].y_final);
-        cr->line_to(data::selections[i].x_final,data::selections[i].y_final);
-        cr->line_to(data::selections[i].x_final,data::selections[i].y_init);
-        cr->line_to(data::selections[i].x_init,data::selections[i].y_init);
+        //selections[i].first = init
+        coords coords_init_temp = selection_abs[i].rect.first * img_scale;
+        coords coords_final_temp = selection_abs[i].rect.second * img_scale;
+        cr->move_to(coords_init_temp.x,coords_init_temp.y);
+        cr->line_to(coords_init_temp.x,coords_final_temp.y);
+        cr->line_to(coords_final_temp.x,coords_final_temp.y);
+        cr->line_to(coords_final_temp.x,coords_init_temp.y);
+        cr->line_to(coords_init_temp.x,coords_init_temp.y);
     }
     cr->stroke();
 };
@@ -68,10 +68,6 @@ void img_area::resize_img()
 {
     img_scale = (data::content2_img_siz)/100; //1 is 100%, 2 is 200%
     std::cout << img_scale << std::endl;
-    for (int i = 0;i<data::selections.size();i++)
-    {
-        data::selections[i] = data::selections_abs[i] * img_scale;
-    }
 
     try {
         m_image = Gdk::Pixbuf::create_from_file("../img_data/test1.jpg");
@@ -99,7 +95,7 @@ void img_area::resize_img()
 //---------Default handler overrides start---------------
 bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    if (x_init!=0 && y_init!=0)
+    if (!coords_init.iszero())
     {
 
         Gtk::Allocation allocation = get_allocation();
@@ -112,21 +108,19 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
         cr->paint();
 
+        cr->set_line_width(2);
+        cr->set_source_rgb(0,0,0);
+        if (selection_abs.size() !=0){draw_all_rect(cr);}
 //        cr->save();
         cr->set_line_width(2);
         cr->set_source_rgb(0,0,0);
-        if (data::selections.size() !=0){draw_all_rect(cr);}
-//        cr->restore();
-        cr->save();
-        cr->set_line_width(2);
-        cr->set_source_rgb(0,0,0);
-        cr->move_to(x_init,y_init);
-        cr->line_to(x_init,y_curr);
-        cr->line_to(x_curr,y_curr);
-        cr->line_to(x_curr,y_init);
-        cr->line_to(x_init,y_init);
+        cr->move_to(coords_init.x,coords_init.y);
+        cr->line_to(coords_init.x,coords_current.y);
+        cr->line_to(coords_current.x,coords_current.y);
+        cr->line_to(coords_current.x,coords_init.y);
+        cr->line_to(coords_init.x,coords_init.y);
         cr->stroke();
-        cr->restore();
+//        cr->restore();
         return true;
     }
     else {
@@ -142,7 +136,7 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
                                       (width - m_image->get_width()) / 2);
         cr->paint();
 
-        if (data::selections.size() !=0)
+        if (selection_abs.size() !=0)
         {
             cr->set_line_width(2);
             cr->set_source_rgb(0,0,0);
@@ -208,6 +202,7 @@ bool img_area::on_enter_notify_event(GdkEventCrossing *crossing_event)
     m_refGdkWindow->set_cursor(cursor1);
     gdouble a = (*crossing_event).x;
     gdouble b = (*crossing_event).y;
+    std::cout << "ENTER NOTIFY EVENT:" << std::endl;
     std::cout << a << std::endl << b << std::endl << "------" << std::endl;
     return true;
 
@@ -222,8 +217,10 @@ bool img_area::on_button_press_event(GdkEventButton* button_event)
     if (button_event->button ==1)
     {
         time_init = button_event->time;
-        x_init = (button_event->x);
-        y_init = button_event->y;
+        coords_init.x = button_event->x;
+        coords_init.y = button_event->y;
+//        x_init = (button_event->x);
+//        y_init = button_event->y;
         std::cout << "LEFT MOUSE PRESSED" << std::endl;
     }
     return true;
@@ -235,34 +232,113 @@ bool img_area::on_button_release_event(GdkEventButton* release_event)
     if (release_event->button ==1)
     {
         time_final = release_event->time;
-        x_final = release_event->x;
-        y_final = release_event->y;
+        coords_final.x = release_event->x;
+        coords_final.y = release_event->y;
 
-        data::selections.push_back(selection_box(x_init,x_final,y_init,y_final));
-        data::selections_abs.push_back(selection_box(x_init/img_scale,x_final/img_scale,y_init/img_scale,y_final/img_scale));
+//        selection_abs.push_back(rect_coords(coords_init,coords_final)/img_scale);
         std::cout << "LEFT MOUSE RELEASED" << std::endl;
 
         time_change = time_final-time_init;
-        std::cout << "X: " << x_init << '\t' << x_final << std::endl;
-        std::cout << "Y: " << y_init << '\t' << y_final << std::endl;
+        std::cout << "X: " << coords_init.x << '\t' << coords_final.x << std::endl;
+        std::cout << "Y: " << coords_init.y << '\t' << coords_final.y << std::endl;
         std::cout << "Change in time: " << time_change << std::endl;
-        x_init =0;
-        y_init=0;
+
+
+        if(ps_dialog)
+        {
+            ps_dialog->set_coords(coords_init, coords_final);
+            ps_dialog->run();
+        }
+        else
+        {
+            ps_dialog = std::make_shared<dialog>();
+            Gtk::Window *window = dynamic_cast <Gtk::Window *> (get_toplevel());
+            if (window->get_is_toplevel()) {
+                ps_dialog->set_transient_for(*window);
+            }
+            ps_dialog->signal_response().connect(
+                    sigc::mem_fun(*this, &img_area::on_dialog_response));
+            ps_dialog->set_coords(coords_init, coords_final);
+            ps_dialog->run();
+        }
+
+        coords_init = coords();
+        coords_final = coords();
         time_init=0;
     }
     return true;
 }
 
+
 //only cursor motion when left mouse is pressed is detected due to event mask of Gdk::BUTTON1_MOTION_MASK
 //change mask at on_realize() function if needed
 bool img_area::on_motion_notify_event(GdkEventMotion* motion_event)
 {
-    x_curr = motion_event->x;
-    y_curr = motion_event->y;
+    coords_current.x = motion_event->x;
+    coords_current.y = motion_event->y;
     queue_draw();
 
     return true;
 }
 //---------Default handler overrides end---------------
 
+//----Dialog Handlers ---
+void img_area::on_dialog_response(int response_id)
+{
+    std::cout << response_id
+              << ", close=" << Gtk::RESPONSE_CLOSE
+              << ", cancel=" << Gtk::RESPONSE_CANCEL
+              << ", delete_event=" << Gtk::RESPONSE_DELETE_EVENT
+              << ", ok_event=" << Gtk::RESPONSE_OK
+              << std::endl;
+
+    switch (response_id)
+    {
+        case Gtk::RESPONSE_CLOSE:
+            break;
+        case Gtk::RESPONSE_CANCEL:
+            ps_dialog->hide();
+            break;
+        case Gtk::RESPONSE_DELETE_EVENT:
+            ps_dialog.reset();
+            break;
+        case Gtk::RESPONSE_OK:
+            on_dialog_ok_clicked();
+            break;
+        default:
+            std::cout << "Unexpected response!" << std::endl;
+            break;
+    }
+};
+
+void img_area::on_dialog_ok_clicked()
+{
+    //Check if all the parameters are acceptable
+    if((ps_dialog->curr_set)->text_check_all())
+    {
+        ps_dialog->curr_set->save_values();
+        ps_dialog.reset();
+        //add coordinates to list
+        selection_abs.push_back(rect_coords(coords_init,coords_final)/img_scale);
+    }
+    //If not all parameters are acceptable, pop up warning dialog
+    else
+    {
+        const int response = ps_dialog->p_warning->run();
+
+        switch (response)
+        {
+            case Gtk::RESPONSE_OK:
+                ps_dialog->p_warning->hide();
+                break;
+            case Gtk::RESPONSE_DELETE_EVENT:
+                ps_dialog->p_warning->hide();
+                break;
+            default:
+                std::cerr << "Unknown button clicked" << std::endl;
+                break;
+        }
+        ps_dialog->grab_focus();
+    }
+}
 

@@ -12,6 +12,7 @@
 #include <gdkmm/event.h>
 #include <gdkmm/cursor.h>
 #include <glibmm/fileutils.h>
+#include "../dialog/dialog.h"
 #include "../../../../data/data.h"
 
 class img_area : public Gtk::DrawingArea
@@ -24,11 +25,15 @@ public:
 protected:
     //temp data
     guint32 time_init,time_final,time_change;
-    gdouble x_init, x_final,x_curr;
-    gdouble y_init,y_final,y_curr;
+    coords coords_init,coords_final,coords_current;
+    std::vector <rect_coords> selection_abs;
 
     int img_width, img_height;
     gdouble img_scale; //scale is in absolute number, no more % (e.g. 1 = 100%)
+
+    std::shared_ptr <dialog> ps_dialog;
+    void on_dialog_ok_clicked();
+    void on_dialog_response(int response_id);
     //various pointers used in functions
 
     Glib::RefPtr<Gdk::Pixbuf> m_image,cursor_img;
@@ -48,6 +53,8 @@ protected:
     bool on_button_release_event(GdkEventButton* release_event) override;
     bool on_motion_notify_event(GdkEventMotion* motion_event) override;
 //    bool on_leave_notify_event(GdkEventCrossing *crossing_event) override;
+
+
 
 };
 

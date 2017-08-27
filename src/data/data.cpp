@@ -11,7 +11,7 @@ namespace data {
     int data3 = -1;
     double content2_img_siz = 100; //in terms of percent
     std::string str1 = "QWE",str2 = "ASD",str3 = "ZXC";
-    std::vector<selection_box> selections,selections_abs;
+    std::vector<std::shared_ptr<selection_data>> selections;
 
 };
 
@@ -28,16 +28,4 @@ void data::print_val(){
 
 
 
-selection_box::selection_box(gdouble xin, gdouble xfin, gdouble yin, gdouble yfin)
-{
-    x_init = xin;
-    x_final = xfin;
-    y_init = yin;
-    y_final = yfin;
-};
 
-
-selection_box selection_box:: operator*(gdouble scale)
-{
-    return selection_box(x_init*scale,x_final*scale,y_init*scale,y_final*scale);
-};
