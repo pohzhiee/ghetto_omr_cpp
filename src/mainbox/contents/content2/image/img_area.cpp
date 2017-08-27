@@ -51,18 +51,25 @@ img_area::~img_area()
 //custom functions start
 void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    for(int i=0;i<selection_abs.size();i++)
+    for (auto &selection: data::selections)
     {
-        //selections[i].first = init
-        coords coords_init_temp = selection_abs[i].rect.first * img_scale;
-        coords coords_final_temp = selection_abs[i].rect.second * img_scale;
-        cr->move_to(coords_init_temp.x,coords_init_temp.y);
-        cr->line_to(coords_init_temp.x,coords_final_temp.y);
-        cr->line_to(coords_final_temp.x,coords_final_temp.y);
-        cr->line_to(coords_final_temp.x,coords_init_temp.y);
-        cr->line_to(coords_init_temp.x,coords_init_temp.y);
+        cr->set_line_width(2*img_scale);
+        auto rgba = selection->border_color;
+        cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
+
+        gdouble x_init = selection->init_coord.x * img_scale;
+        gdouble x_final = selection->final_coord.x * img_scale;
+        gdouble y_init = selection->init_coord.y * img_scale;
+        gdouble y_final = selection->final_coord.y *img_scale;
+
+        cr->move_to(x_init,y_init);
+        cr->line_to(x_init,y_final);
+        cr->line_to(x_final,y_final);
+        cr->line_to(x_final,y_init);
+        cr->line_to(x_init,y_init);
+        cr->stroke();
+
     }
-    cr->stroke();
 };
 
 void img_area::resize_img()
@@ -109,11 +116,9 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
         cr->paint();
 
-        cr->set_line_width(2);
-        cr->set_source_rgb(0,0,0);
         if (selection_abs.size() !=0){draw_all_rect(cr);}
 //        cr->save();
-        cr->set_line_width(2);
+        cr->set_line_width(2*img_scale);
         cr->set_source_rgb(0,0,0);
         cr->move_to(coords_init.x,coords_init.y);
         cr->line_to(coords_init.x,coords_current.y);

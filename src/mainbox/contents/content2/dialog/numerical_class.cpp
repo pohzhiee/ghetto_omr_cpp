@@ -10,7 +10,7 @@ numerical_class::numerical_class()
 
     //First parameter, layer name
     auto layer_label = Gtk::manage(new Gtk::Label("Layer Name: "));
-    auto layer_entry = Gtk::manage(new Gtk::Entry());
+    layer_entry = Gtk::manage(new Gtk::Entry());
     layer_entry->set_text("Numerical 0");
 
     add_field(layer_label,layer_entry);
@@ -49,7 +49,28 @@ numerical_class::numerical_class()
 }
 
 
+
 void numerical_class::save_values()
 {
-    std::cout << "NUMERICAL VALUE SAVED" << std::endl;
-}
+    std::shared_ptr<numerical_data> p_data;
+    p_data = std::make_shared<numerical_data>();
+    p_data->isnum = true;
+    p_data->init_coord = coords_init;
+    p_data->final_coord = coords_final;
+    p_data->border_color = m_Color;
+    p_data->layer_name = layer_entry->get_text();
+    p_data->bubble_shape = combobox_arr[0] ->get_active_text();
+    p_data->no_col = combobox_arr[1] ->get_active_text();
+    p_data->no_row = combobox_arr[2] ->get_active_text();
+    p_data->no_qn = combobox_arr[3] ->get_active_text();
+    p_data->no_digit = combobox_arr[4] ->get_active_text();
+
+    //long process to get from non entry combobox
+    auto treemodel_iter = icon_combobox_arr[0]->get_active();
+    Gtk::TreeModel::Row row = *treemodel_iter;
+    ModelColumns columns;
+    p_data->orientation = row[columns.col_name];
+
+    data::selections.push_back(p_data);
+
+};

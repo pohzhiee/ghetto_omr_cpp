@@ -68,7 +68,7 @@ void dialog_qn::add_color_selector()
     //set initial color
     m_Color.set_red(0.0);
     m_Color.set_green(0.0);
-    m_Color.set_blue(1.0);
+    m_Color.set_blue(0.0);
     m_Color.set_alpha(1.0); //opaque
     m_ColorButton.set_rgba(m_Color);
 
