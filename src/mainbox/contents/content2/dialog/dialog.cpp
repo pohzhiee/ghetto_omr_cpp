@@ -3,7 +3,6 @@
 //
 
 #include "dialog.h"
-
 dialog::dialog()
 {
     p_warning = std::make_shared<Gtk::MessageDialog>("Values out of bounds, please make sure all values are correct",
@@ -25,18 +24,20 @@ dialog::dialog()
     p_content_vbox = get_content_area();
 
     //Create array of possible selection objects
-    content_arr.push_back(&mcq1);
-    content_arr.push_back(&num1);
-    content_arr.push_back(&marker1);
+    std::shared_ptr<mcq_class> mcq = std::make_shared<mcq_class>();
+    std::shared_ptr<numerical_class> num = std::make_shared<numerical_class>();
+    std::shared_ptr<marker_class> marker = std::make_shared<marker_class>();
+    content_arr.push_back(mcq);
+    content_arr.push_back(num);
+    content_arr.push_back(marker);
 
     //Create combo box for type selection (i.e. numerical answer, surface marker etc)
     response_type = Gtk::ComboBoxText(false);
     response_type.append("Multiple Choice Question (e.g. ABCDE)");
     response_type.append("Numerical Answer (e.g. 333");
     response_type.append("Surface Marker");
-    response_type.set_active(0);
-    curr_set = content_arr[0];
     response_type.signal_changed().connect(sigc::mem_fun(*this,&dialog::response_type_change));
+    response_type.set_active(0);
 
     //Create horizontal box to pack the combo box and label together
     response_type_box.set_orientation(Gtk::ORIENTATION_HORIZONTAL);
@@ -44,10 +45,10 @@ dialog::dialog()
     response_type_box.pack_start(response_type_label,Gtk::PACK_SHRINK);
     response_type_box.pack_start(response_type,Gtk::PACK_SHRINK);
     response_type_box.set_halign(Gtk::ALIGN_CENTER);
-
-    //pack content into the content box of the dialog
-    p_content_vbox->pack_start(response_type_box,Gtk::PACK_SHRINK);
-    p_content_vbox->pack_start(*(content_arr[0]));
+//
+//    //pack content into the content box of the dialog
+//    p_content_vbox->pack_start(response_type_box,Gtk::PACK_SHRINK);
+//    p_content_vbox->pack_start(*(content_arr[0]));
 
     //Add response buttons
     add_button("CANCEL", Gtk::RESPONSE_CANCEL);
@@ -62,13 +63,21 @@ dialog::~dialog()
 
 void dialog::response_type_change()
 {
+    auto asd = p_content_vbox->get_children();
     int row_num = response_type.get_active_row_number();
     if(curr_set){
         p_content_vbox->remove(*(curr_set));
+        p_content_vbox->pack_start(*(content_arr[row_num]),Gtk::PACK_SHRINK);
+        curr_set = content_arr[row_num];
+        p_content_vbox->show_all_children();
     }
-    p_content_vbox->pack_start(*(content_arr[row_num]),Gtk::PACK_SHRINK);
-    curr_set = content_arr[row_num];
-    p_content_vbox->show_all_children();
+    else
+    {
+        p_content_vbox->pack_start(response_type_box,Gtk::PACK_SHRINK);
+        p_content_vbox->pack_start(*(content_arr[0]));
+        curr_set = content_arr[0];
+    }
+    show_all_children();
 }
 
 

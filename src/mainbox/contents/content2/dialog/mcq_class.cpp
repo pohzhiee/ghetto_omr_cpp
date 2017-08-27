@@ -69,7 +69,5 @@ void mcq_class::save_values()
     Gtk::TreeModel::Row row = *treemodel_iter;
     ModelColumns columns;
     p_data->orientation = row[columns.col_name];
-
     data::selections.push_back(p_data);
-
 };

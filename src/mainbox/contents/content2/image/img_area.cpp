@@ -51,11 +51,13 @@ img_area::~img_area()
 //custom functions start
 void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    for (auto &selection: data::selections)
+    for (std::shared_ptr<selection_data> selection: data::selections)
     {
         cr->set_line_width(2*img_scale);
-        auto rgba = selection->border_color;
+        Gdk::RGBA rgba = selection->get_color();
         cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
+        std::cout << "RED: " << rgba.get_red() << std::endl;
+        std::cout << "Blue: " << rgba.get_blue() << std::endl;
 
         gdouble x_init = selection->init_coord.x * img_scale;
         gdouble x_final = selection->final_coord.x * img_scale;
@@ -116,7 +118,7 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
         cr->paint();
 
-        if (selection_abs.size() !=0){draw_all_rect(cr);}
+        if (data::selections.size() !=0){draw_all_rect(cr);}
 //        cr->save();
         cr->set_line_width(2*img_scale);
         cr->set_source_rgb(0,0,0);
@@ -133,6 +135,7 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
         if (!m_image)
             return false;
 
+        if(data::selections.size()!=0){draw_all_rect(cr);}
         Gtk::Allocation allocation = get_allocation();
         const int width = allocation.get_width();
         const int height = allocation.get_height();
@@ -322,6 +325,7 @@ void img_area::on_dialog_ok_clicked()
     //Check if all the parameters are acceptable
     if((ps_dialog->curr_set)->text_check_all())
     {
+        auto asd = ps_dialog->curr_set;
         ps_dialog->curr_set->save_values();
         ps_dialog.reset();
         //add coordinates to list

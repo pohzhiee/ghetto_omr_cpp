@@ -9,7 +9,7 @@
 selection_data::selection_data()
 {
     layer_name = "Layer 0";
-    border_color = Gdk::RGBA("000000");
+    border_color = Gdk::RGBA("FF0000");
     init_coord = coords();
     final_coord = coords();
     isnum = false;
@@ -25,6 +25,12 @@ void selection_data::print_params()
     std::cout << "Final coords, X:" << final_coord.x << "\t Y: " << final_coord.y << std::endl;
 }
 
+Gdk::RGBA selection_data::get_color()
+{
+    return border_color;
+};
+
+
 std::unordered_map<std::string, Glib::ustring> selection_data::get_param_map()
 {
     std::unordered_map<std::string, Glib::ustring> mymap;
@@ -33,7 +39,9 @@ std::unordered_map<std::string, Glib::ustring> selection_data::get_param_map()
 
     return mymap;
 }
+//END OF BASE CLASS
 
+//START OF NUMERICAL
 numerical_data::numerical_data() {
     bubble_shape = "Unknown shape";
     orientation = "Some orientation";
@@ -57,7 +65,13 @@ void numerical_data::print_params()
     std::cout << "Number of digits: " << no_digit << std::endl;
 }
 
+Gdk::RGBA numerical_data::get_color()
+{
+    return border_color;
+};
+//END OF NUMERICAL
 
+//START OF MCQ
 mcq_data::mcq_data()
 {
     bubble_shape = "Unknown shape";
@@ -79,6 +93,7 @@ void mcq_data::print_params()
     std::cout << "Number of rows: " << no_row << std::endl;
     std::cout << "Number of questions: " << no_qn << std::endl;
 }
+
 std::unordered_map<std::string, Glib::ustring> mcq_data::get_param_map()
 {
     std::unordered_map<std::string, Glib::ustring> mymap;
@@ -93,6 +108,18 @@ std::unordered_map<std::string, Glib::ustring> mcq_data::get_param_map()
     return mymap;
 }
 
+Gdk::RGBA mcq_data::get_color()
+{
+    return border_color;
+};
+//END OF MCQ
+
+//START OF MARKER
 marker_data::marker_data()
 {
 }
+
+Gdk::RGBA marker_data::get_color()
+{
+    return border_color;
+};

@@ -10,6 +10,7 @@
 #include "numerical_class.h"
 #include "mcq_class.h"
 #include "marker_class.h"
+#include <memory>
 
 
 class dialog : public Gtk::Dialog {
@@ -18,7 +19,7 @@ public:
     virtual ~dialog();
 
     //to access current set of parameters (e.g. numerical)
-    dialog_qn *curr_set;
+    std::shared_ptr<dialog_qn> curr_set;
 
     //warning message when input parameters dont make sense
     std::shared_ptr<Gtk::MessageDialog> p_warning;
@@ -40,12 +41,12 @@ protected:
     Gtk::Label response_type_label;
 
     //widgets for getting response parameters
-    mcq_class mcq1;
-    numerical_class num1;
-    marker_class marker1;
+    std::unique_ptr<mcq_class> mcq1;
+    std::unique_ptr<numerical_class> num1;
+    std::unique_ptr<marker_class> marker1;
 
     //list of derived classes for getting response parameters
-    std::vector<dialog_qn*> content_arr;
+    std::vector<std::shared_ptr<dialog_qn>> content_arr;
 
 };
 
