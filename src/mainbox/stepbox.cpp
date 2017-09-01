@@ -4,7 +4,7 @@
 
 #include "stepbox.h"
 
-mainbox::stepbox::stepbox(mainbox *pinput){
+stepbox::stepbox(mainbox *pinput){
     //set to vertical box
     pMainBox = pinput;
     set_orientation(Gtk::ORIENTATION_VERTICAL);
@@ -34,10 +34,10 @@ mainbox::stepbox::stepbox(mainbox *pinput){
     step4.join_group(step1);
 
     //connect the relevant functions
-    step1.signal_toggled().connect(sigc::mem_fun(*this,&mainbox::stepbox::step1_func));
-    step2.signal_toggled().connect(sigc::mem_fun(*this,&mainbox::stepbox::step2_func));
-    step3.signal_toggled().connect(sigc::mem_fun(*this,&mainbox::stepbox::step3_func));
-    step4.signal_toggled().connect(sigc::mem_fun(*this,&mainbox::stepbox::step4_func));
+    step1.signal_toggled().connect(sigc::mem_fun(*this,&stepbox::step1_func));
+    step2.signal_toggled().connect(sigc::mem_fun(*this,&stepbox::step2_func));
+    step3.signal_toggled().connect(sigc::mem_fun(*this,&stepbox::step3_func));
+    step4.signal_toggled().connect(sigc::mem_fun(*this,&stepbox::step4_func));
 
     //set the names for styling
     Glib::ustring name = "step_button";
@@ -54,22 +54,22 @@ mainbox::stepbox::stepbox(mainbox *pinput){
 }
 
 //functions to call mainbox to change the contents
-void mainbox::stepbox::step1_func()
+void stepbox::step1_func()
 {
     pMainBox->set_content1();
 }
 
-void mainbox::stepbox::step2_func()
+void stepbox::step2_func()
 {
     pMainBox->set_content2();
 }
 
-void mainbox::stepbox::step3_func()
+void stepbox::step3_func()
 {
     pMainBox->set_content3();
 }
 
-void mainbox::stepbox::step4_func()
+void stepbox::step4_func()
 {
     pMainBox->set_content4();
 }

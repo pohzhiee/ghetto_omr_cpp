@@ -7,7 +7,7 @@
 #include "../mainbox.h"
 #include "../../data/data.h"
 
-class mainbox::content1 : public Gtk::Box
+class content1 : public Gtk::Box
 {
 public:
     content1(mainbox *pMainBox);
@@ -19,7 +19,7 @@ protected:
 
 
 
-class mainbox::content3 : public Gtk::Box
+class content3 : public Gtk::Box
 {
 public:
     content3(mainbox *pMainBox);
@@ -27,7 +27,7 @@ protected:
     Gtk::Button btn1;
 };
 
-class mainbox::content4 : public Gtk::Box
+class content4 : public Gtk::Box
 {
 public:
     content4(mainbox *pMainBox);

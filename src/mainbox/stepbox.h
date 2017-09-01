@@ -8,7 +8,7 @@
 #include "mainbox.h"
 #include <gtkmm/radiobutton.h>
 
-class mainbox::stepbox : public Gtk::Box{
+class stepbox : public Gtk::Box{
 public:
     stepbox(mainbox *pinput);
     //expect pinput to be pointer to mainbox

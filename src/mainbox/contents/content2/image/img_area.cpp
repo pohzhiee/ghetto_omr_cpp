@@ -56,8 +56,6 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
         cr->set_line_width(2*img_scale);
         Gdk::RGBA rgba = selection->get_color();
         cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
-        std::cout << "RED: " << rgba.get_red() << std::endl;
-        std::cout << "Blue: " << rgba.get_blue() << std::endl;
 
         gdouble x_init = selection->init_coord.x * img_scale;
         gdouble x_final = selection->final_coord.x * img_scale;

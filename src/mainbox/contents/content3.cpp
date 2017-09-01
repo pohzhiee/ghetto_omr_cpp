@@ -4,7 +4,7 @@
 
 #include "contents.h"
 
-mainbox::content3::content3(mainbox *pMainBox){
+content3::content3(mainbox *pMainBox){
     btn1.set_label("CONTENT3 BTN");
     add(btn1);
 };

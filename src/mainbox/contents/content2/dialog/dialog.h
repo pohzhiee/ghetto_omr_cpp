@@ -41,9 +41,6 @@ protected:
     Gtk::Label response_type_label;
 
     //widgets for getting response parameters
-    mcq_class *mcq;
-    numerical_class *num;
-    marker_class *marker;
 
     //list of derived classes for getting response parameters
     std::vector<dialog_qn*> content_arr;
