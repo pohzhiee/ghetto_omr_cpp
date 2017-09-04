@@ -15,6 +15,7 @@
 #include "content2/image/img_border_box.h"
 
 #include <gtkmm/label.h>
+class LayerBox;
 class layerbox;
 class bottombar;
 class img_area;
@@ -24,6 +25,10 @@ class content2 : public Gtk::Box
 public:
     content2();
 
+
+    /**
+     * Function to resize the image of the main image box
+     */
     void resize_img();
     void set_instruction_btm(int &tool_count);
 protected:
@@ -36,12 +41,14 @@ protected:
     Gtk::ScrolledWindow* add_img_to_scrolled_win();
 
 public:
-    layerbox *layers;
+    LayerBox *layer_box;
 
     //class declarations
     worktools *worktools_box;
     img_area *imgarea;
     bottombar *btm_bar;
+
+    Gtk::Box right_bar;
 
 };
 

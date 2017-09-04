@@ -2,8 +2,8 @@
 // Created by poh on 8/18/17.
 //
 
-#ifndef GTK_MAIN_WORKTOOLS_H
-#define GTK_MAIN_WORKTOOLS_H
+#ifndef WORKTOOLS_H
+#define WORKTOOLS_H
 
 #include <gtkmm/grid.h>
 #include <gtkmm/box.h>
@@ -34,4 +34,4 @@ protected:
 };
 
 
-#endif //GTK_MAIN_WORKTOOLS_H
+#endif //WORKTOOLS_H

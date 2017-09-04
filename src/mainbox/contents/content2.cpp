@@ -9,7 +9,7 @@
 
 #include "content2/image/img_area.h"
 #include "content2/image/bottombar.h"
-#include "content2/tools/layerbox.h"
+#include "content2/layer/LayerBox.h"
 #include "content2/tools/worktools.h"
 
 
@@ -20,7 +20,7 @@ content2::content2(){
 
     imgarea = Gtk::manage(new img_area(this));
 
-    layers = Gtk::manage(new layerbox(this));
+    layer_box = Gtk::manage(new LayerBox(this));
 //    imgarea = Gtk::manage(new img_area(this));
 
 
@@ -39,10 +39,18 @@ content2::content2(){
 
     //pack into main content
     pack_start(*img_box,Gtk::PACK_EXPAND_WIDGET);
-    pack_start(*worktools_box,Gtk::PACK_SHRINK);
+    pack_start(right_bar,Gtk::PACK_SHRINK);
+
+    right_bar.set_orientation(Gtk::ORIENTATION_VERTICAL);
+    right_bar.pack_start(*worktools_box,Gtk::PACK_SHRINK);
+    right_bar.pack_start(*layer_box,Gtk::PACK_EXPAND_WIDGET);
 };
 
 //btm bar functions
+/**
+ * Sets the instruction label at the bottom
+ * @param tool_count
+ */
 void content2::set_instruction_btm(int &tool_count)
 {
     btm_bar->set_instruction(tool_count);

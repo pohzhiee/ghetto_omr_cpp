@@ -1,6 +1,7 @@
 add_subdirectory(image)
 add_subdirectory(tools)
 add_subdirectory(dialog)
+add_subdirectory(layer)
 
 
 set(SOURCE
