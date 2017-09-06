@@ -57,10 +57,12 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
         Gdk::RGBA rgba = selection->get_color();
         cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
 
-        gdouble x_init = selection->init_coord.x * img_scale;
-        gdouble x_final = selection->final_coord.x * img_scale;
-        gdouble y_init = selection->init_coord.y * img_scale;
-        gdouble y_final = selection->final_coord.y *img_scale;
+        coords init_coord = selection->get_coords().first;
+        coords final_coord = selection->get_coords().second;
+        gdouble x_init = init_coord.x * img_scale;
+        gdouble x_final = final_coord.x * img_scale;
+        gdouble y_init = init_coord.y * img_scale;
+        gdouble y_final = final_coord.y *img_scale;
 
         cr->move_to(x_init,y_init);
         cr->line_to(x_init,y_final);
@@ -321,10 +323,9 @@ void img_area::on_dialog_response(int response_id)
 void img_area::on_dialog_ok_clicked()
 {
     //Check if all the parameters are acceptable
-    if((ps_dialog->curr_set)->text_check_all())
+    if((ps_dialog->current_set)->text_check_all())
     {
-        auto asd = ps_dialog->curr_set;
-        ps_dialog->curr_set->save_values();
+        ps_dialog->current_set->save_values();
         ps_dialog.reset();
         //add coordinates to list
         selection_abs.push_back(rect_coords(coords_init,coords_final)/img_scale);

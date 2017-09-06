@@ -14,49 +14,21 @@
 
 class selection_data {
 protected:
-//    selection_data();
     selection_data();
-public:
     coords init_coord,final_coord;
     rect_coords rect;
-    Gdk::RGBA border_color;
-    Glib::ustring layer_name;
-    bool isnum, ismcq, ismarker;
-    virtual void print_params();
-//    virtual void set_params(Gdk::RGBA color_inp, coords init, coords final, std::vector<Glib::ustring>);
-//    virtual void set_numerical();
-//    virtual void set_mcq();
-//    virtual void set_marker();
-    virtual std::unordered_map<std::string, Glib::ustring> get_param_map();
-    virtual Gdk::RGBA get_color();
 
-};
-
-class numerical_data : public selection_data{
 public:
-    numerical_data();
-    void print_params() override;
-    Gdk::RGBA get_color() override;
-    Glib::ustring bubble_shape,orientation;
-    Glib::ustring no_col,no_row,no_qn,no_digit;
+    //Virtual getters
+    virtual std::pair <coords,coords> get_coords();
+    virtual Gdk::RGBA get_color() const=0;
+    virtual Glib::ustring get_value_by_key(std::string key)=0;
 
-};
+    //Virtual setters
+    virtual void set_coords(coords init_coord, coords final_coord);
+    virtual void set_color(Gdk::RGBA color)=0;
+    virtual void set_value_by_key(std::pair<std::string,Glib::ustring> pair)=0;
 
-class mcq_data : public selection_data{
-public:
-    mcq_data();
-    void print_params() override;
-    Gdk::RGBA get_color() override;
-    std::unordered_map<std::string, Glib::ustring> get_param_map() override;
-    Glib::ustring bubble_shape,orientation;
-    Glib::ustring no_col,no_row,no_qn;
-    Gdk::RGBA border_color;
-};
-
-class marker_data : public selection_data{
-public:
-    marker_data();
-    Gdk::RGBA get_color() override;
 };
 
 

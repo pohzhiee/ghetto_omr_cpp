@@ -5,71 +5,138 @@
 #include "numerical_class.h"
 #include <iostream>
 
-numerical_class::numerical_class()
+numerical_class::numerical_class(std::shared_ptr<selection_data> data_pointer)
 {
+    data_pointer == nullptr ? p_data = std::make_shared<numerical_data>() : p_data = data_pointer;
 
     //First parameter, layer name
-    auto layer_label = Gtk::manage(new Gtk::Label("Layer Name: "));
-    layer_entry = Gtk::manage(new Gtk::Entry());
-    layer_entry->set_text("Numerical 0");
 
-    add_field(layer_label,layer_entry);
+    {
+        Glib::ustring layer_name;
+        try{
+            layer_name=p_data->get_value_by_key("layer_name");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+        layer_entry=add_field("Layer Name: ", layer_name);
+    }
+
     //Second parameter, shape
-    add_checkable_field("Bubble Shape: ", {"Circle", "Oval", "Rectangle", "Square"});
+    {
+        Glib::ustring bubble_shape;
+        try{
+            bubble_shape=p_data->get_value_by_key("bubble_shape");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+        entries entry_temp = {"Circle", "Oval", "Rectangle", "Square"};
+        entries icon_path_array = {"../icons/circle.svg",
+                                   "../icons/oval.svg",
+                                   "../icons/rectangle.svg",
+                                   "../icons/square.svg"};
+        shape_combobox=add_icon_combobox("Bubble Shape: ", entry_temp, icon_path_array,30,bubble_shape);
+    }
 
     //Third Parameter, orientation
-    entries entry_temp = {"Vertical", "Horizontal"};
-    entries icon_path_array = {"../icons/orientation_vertical.svg","../icons/orientation_horizontal.svg"};
-    add_icon_combobox("Question Orientation: ", entry_temp, icon_path_array,50);
+    {
+        Glib::ustring orientation;
+        try{
+            orientation=p_data->get_value_by_key("orientation");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+        entries entry_temp = {"Vertical", "Horizontal"};
+        entries icon_path_array = {"../icons/orientation_vertical.svg","../icons/orientation_horizontal.svg"};
+        orientation_combobox=add_icon_combobox("Question Orientation: ", entry_temp, icon_path_array,50,orientation);
+    }
 
     //Fourth Parameter, Number of columns
-    entries entr_temp;
-    for (int i = 1; i<=50 ; i++)
     {
-        entr_temp.push_back(std::to_string(i));
+        Glib::ustring no_columns;
+        try{
+            no_columns=p_data->get_value_by_key("no_columns");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+
+        col_entry = add_int_field("Number of Columns", no_columns);
     }
-    add_checkable_field("Number of Columns: ", entr_temp);
+
     //Fifth Parameter, Number of rows
-    add_checkable_field("Number of Rows: ", entr_temp);
+    {
+        Glib::ustring no_rows;
+        try{
+            no_rows=p_data->get_value_by_key("no_rows");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+
+        row_entry = add_int_field("Number of Rows", no_rows);
+    }
 
     //Sixth Parameter, Number of questions
-    for (int i=51;i<=100;i++)
     {
-        entr_temp.push_back(std::to_string(i)) ;
-    }
-    add_checkable_field("Number of Questions: ", entr_temp);
+        Glib::ustring no_questions;
+        try{
+            no_questions=p_data->get_value_by_key("no_questions");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
 
+        qn_entry = add_int_field("Number of Questions", no_questions);
+    }
     //Seventh Parameter, number of digits
-    entries::const_iterator first = entr_temp.begin();
-    entries::const_iterator dig_last = entr_temp.begin() + 6;
-    add_checkable_field("Number of digits: ", entries(first,dig_last));
+    {
+        Glib::ustring no_digits;
+        try{
+            no_digits=p_data->get_value_by_key("no_digits");
+        }
+        catch (std::invalid_argument &e){
+            std::cerr << e.what() << std::endl;
+        }
+
+        digit_entry = add_int_field("Number of Digits", no_digits);
+    }
 
     //Eighth Parameter, selection border color
-    add_color_selector();
+    {
+        Gdk::RGBA color = p_data->get_color();
+        add_color_selector(color);
+    }
 }
 
 
 
 void numerical_class::save_values()
 {
-    std::shared_ptr<numerical_data> p_data;
-    p_data = std::make_shared<numerical_data>();
-    p_data->isnum = true;
-    p_data->init_coord = coords_init;
-    p_data->final_coord = coords_final;
-    p_data->border_color = m_Color;
-    p_data->layer_name = layer_entry->get_text();
-    p_data->bubble_shape = combobox_arr[0] ->get_active_text();
-    p_data->no_col = combobox_arr[1] ->get_active_text();
-    p_data->no_row = combobox_arr[2] ->get_active_text();
-    p_data->no_qn = combobox_arr[3] ->get_active_text();
-    p_data->no_digit = combobox_arr[4] ->get_active_text();
+    p_data->set_coords(coords_init, coords_final);
+    p_data->set_color(m_Color);
+    p_data->set_value_by_key(std::make_pair("layer_name",layer_entry->get_text()));
+    p_data->set_value_by_key(std::make_pair("no_columns",col_entry->get_text()));
+    p_data->set_value_by_key(std::make_pair("no_rows",row_entry->get_text()));
+    p_data->set_value_by_key(std::make_pair("no_questions",qn_entry->get_text()));
+    p_data->set_value_by_key(std::make_pair("no_digits",digit_entry->get_text()));
 
-    //long process to get from non entry combobox
-    auto treemodel_iter = icon_combobox_arr[0]->get_active();
-    Gtk::TreeModel::Row row = *treemodel_iter;
-    ModelColumns columns;
-    p_data->orientation = row[columns.col_name];
+    //Get the proper value out of shape_combobox
+    {
+        ModelColumns columns;
+        auto treemodel_iter = shape_combobox->get_active();
+        Gtk::TreeModel::Row row = *treemodel_iter;
+        p_data->set_value_by_key(std::make_pair("bubble_shape",row[columns.col_name]));
+    }
+    //Get the proper value out of orientation_combobox
+    {
+        ModelColumns columns;
+        auto treemodel_iter = orientation_combobox->get_active();
+        Gtk::TreeModel::Row row = *treemodel_iter;
+        p_data->set_value_by_key(std::make_pair("orientation",row[columns.col_name]));
+    }
 
     data::selections.push_back(p_data);
 

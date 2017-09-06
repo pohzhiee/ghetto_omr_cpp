@@ -1,6 +1,7 @@
 add_subdirectory(startup)
 add_subdirectory(mainbox)
 add_subdirectory(data)
+add_subdirectory(functions)
 set(SOURCE
         ${SOURCE}
         ${CMAKE_CURRENT_SOURCE_DIR}/main.cpp

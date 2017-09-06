@@ -6,10 +6,8 @@
 #define GTK_MAIN_DATA_H
 
 #include <string>
-#include <functional>
 #include <glibmm/fileutils.h>
 #include <vector>
-#include <string>
 #include <memory>
 #include "selection_data.h"
 

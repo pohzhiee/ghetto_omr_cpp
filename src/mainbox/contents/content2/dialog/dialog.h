@@ -19,6 +19,8 @@ public:
     virtual ~dialog();
 
     //to access current set of parameters (e.g. numerical)
+    std::shared_ptr<dialog_qn> current_set;
+
     dialog_qn* curr_set;
 
     //warning message when input parameters dont make sense
@@ -44,6 +46,9 @@ protected:
 
     //list of derived classes for getting response parameters
     std::vector<dialog_qn*> content_arr;
+
+
+    std::vector<std::shared_ptr<dialog_qn>> content_array;
 
 };
 

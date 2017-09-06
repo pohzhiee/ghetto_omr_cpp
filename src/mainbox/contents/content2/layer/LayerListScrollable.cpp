@@ -23,21 +23,6 @@ LayerListScrollable::LayerListScrollable(LayerBox *layerbox)  :
      */
     add(tree_view_);
     initialise_list();
-
-//    std::ostringstream output (std::ios_base::ate);
-//
-//    for(int i = 1; i <= 50; ++i)
-//
-//    {
-//        output.str("#");
-//        output << i;
-//
-//        auto row = *list_store_->append();
-//
-//        row[list_columns_.text]   = output.str();
-//        row[list_columns_.active] = ((i % 2) != 0);
-//        row[list_columns_.unique_index] = index++;
-//    }
     show_all_children();
 }
 
@@ -45,6 +30,7 @@ LayerListScrollable::~LayerListScrollable() {
 
 }
 
+//Signal Handlers
 /**
  * Signal handler for visibility cell toggle on off
  * For signal origin, look at CellRender_isVisible::activate_vfunc
@@ -60,6 +46,7 @@ void LayerListScrollable::on_cell_toggled(const Glib::ustring& path_string)
     row[list_columns_.active] = !row[list_columns_.active];
 }
 
+//General functions
 /**
  * Gets the unique index of the selected row in the treemodel
  * @return
@@ -73,6 +60,8 @@ int LayerListScrollable::get_row_index()
     int value = row_iter->get_value(list_columns_.unique_index);
     return value;
 }
+
+
 
 /**
  * Deletes the row of data based on the given unique index
@@ -122,6 +111,8 @@ void LayerListScrollable::delete_active_row()
     }
 }
 
+
+//Constructors
 /**
  * Function to initialise delete layer confirmation dialog
  * Has to be called after widget is realised inside a window (e.g. outside constructor)
@@ -176,6 +167,11 @@ void LayerListScrollable::initialise_list()
 
 }
 
+/**
+ * Main add row function, usually called from parent
+ * @param input
+ * input to be added to the row
+ */
 void LayerListScrollable::add_row(Glib::ustring &input)
 {
 

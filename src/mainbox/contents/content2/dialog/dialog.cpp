@@ -24,9 +24,9 @@ dialog::dialog()
     p_content_vbox = get_content_area();
 
     //Create array of possible selection objects
-    content_arr.push_back(Gtk::manage(new mcq_class()));
-    content_arr.push_back(Gtk::manage(new numerical_class()));
-    content_arr.push_back(Gtk::manage(new marker_class()));
+    content_array.push_back(std::make_shared<mcq_class>());
+    content_array.push_back(std::make_shared<numerical_class>());
+    content_array.push_back(std::make_shared<marker_class>());
 
     //Create combo box for type selection (i.e. numerical answer, surface marker etc)
     response_type = Gtk::ComboBoxText(false);
@@ -34,6 +34,7 @@ dialog::dialog()
     response_type.append("Numerical Answer (e.g. 333");
     response_type.append("Surface Marker");
     response_type.signal_changed().connect(sigc::mem_fun(*this,&dialog::response_type_change));
+    //TODO: determine type of resposne and set active appropriately
     response_type.set_active(0);
 
     //Create horizontal box to pack the combo box and label together
@@ -60,19 +61,18 @@ dialog::~dialog()
 
 void dialog::response_type_change()
 {
-    auto asd = p_content_vbox->get_children();
     int row_num = response_type.get_active_row_number();
-    if(curr_set){
-        p_content_vbox->remove(*(curr_set));
-        p_content_vbox->pack_start(*(content_arr[row_num]),Gtk::PACK_SHRINK);
-        curr_set = content_arr[row_num];
+    if(current_set){
+        p_content_vbox->remove(*(current_set));
+        p_content_vbox->pack_start(*(content_array[row_num]),Gtk::PACK_SHRINK);
+        current_set = content_array[row_num];
         p_content_vbox->show_all_children();
     }
     else
     {
         p_content_vbox->pack_start(response_type_box,Gtk::PACK_SHRINK);
-        p_content_vbox->pack_start(*(content_arr[0]));
-        curr_set = content_arr[0];
+        p_content_vbox->pack_start(*(content_array[0]));
+        current_set = content_array[0];
     }
     show_all_children();
 }
@@ -83,7 +83,7 @@ void dialog::set_coords(coords input_coords_init, coords input_coords_final)
     coords_init = input_coords_init;
     coords_final = input_coords_final;
 
-    for (auto &content_obj: content_arr)
+    for (auto &content_obj: content_array)
     {
         content_obj->set_coords(input_coords_init, input_coords_final);
     }
