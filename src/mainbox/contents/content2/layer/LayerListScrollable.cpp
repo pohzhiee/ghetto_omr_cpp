@@ -4,8 +4,10 @@
 
 #include <iostream>
 #include <memory>
+#include <gtkmm/stock.h>
 #include "LayerListScrollable.h"
 #include "CellRenderer_isVisible.h"
+#include "../image/img_area.h"
 
 LayerListScrollable::LayerListScrollable(LayerBox *layerbox)  :
         list_columns_ (),
@@ -44,6 +46,9 @@ void LayerListScrollable::on_cell_toggled(const Glib::ustring& path_string)
 
     // Invert the 'active' value in the toggled row.
     row[list_columns_.active] = !row[list_columns_.active];
+    long index = row[list_columns_.unique_index];
+    data::selections_map[index]->isVisible=row[list_columns_.active];
+    parent->p_content2->imgarea->queue_draw();
 }
 
 void LayerListScrollable::on_edit_dialog_response(int response_id, std::shared_ptr<dialog> &p_dialog
@@ -247,7 +252,7 @@ void LayerListScrollable::initialise_list()
     tree_view_.set_enable_tree_lines(true);
     //Append 1st column with custom cell renderer
     {
-        auto icon_pixbuf = Gdk::Pixbuf::create_from_file("../icons/alienarena.svg",20,20,true);
+        auto icon_pixbuf = Gdk::Pixbuf::create_from_file("../icons/eye.svg",20,20,true);
         visibility_icon = Gtk::Image(icon_pixbuf);
         CellRenderer_isVisible *const renderer = new CellRenderer_isVisible();
         Gtk::TreeViewColumn  *const column   = new Gtk::TreeViewColumn("Temp title", *Gtk::manage(renderer));

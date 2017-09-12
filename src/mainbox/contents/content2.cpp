@@ -64,6 +64,7 @@ void content2::set_instruction_btm(int &tool_count)
             std::cout << "Index: " << pair.second->get_index() << std::endl;
             std::cout << "X1: " << coords.first.x << " Y1: "  << coords.first.y << std::endl;
             std::cout << "X2: " << coords.second.x << " Y2: "  << coords.second.y << std::endl;
+            std::cout << "Visible? " << pair.second->isVisible << std::endl;
         }
     }
 };

@@ -22,6 +22,7 @@ worktools::worktools(content2 *p_inp){
         if (i !=0){toolbtns[i].join_group(toolbtns[0]);}
         add_to_grid(&toolbtns[i],i);
     }
+    toolbtns[1].set_active(true);
 
 }
 

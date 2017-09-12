@@ -56,23 +56,25 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
     for (auto &pair : data::selections_map)
     {
         std::shared_ptr<selection_data> &selection = pair.second;
-        cr->set_line_width(2*img_scale);
-        Gdk::RGBA rgba = selection->get_color();
-        cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
+        if(selection->isVisible){
+            cr->set_line_width(2*img_scale);
+            Gdk::RGBA rgba = selection->get_color();
+            cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
 
-        coords init_coord = selection->get_coords().first;
-        coords final_coord = selection->get_coords().second;
-        gdouble x_init = init_coord.x * img_scale;
-        gdouble x_final = final_coord.x * img_scale;
-        gdouble y_init = init_coord.y * img_scale;
-        gdouble y_final = final_coord.y *img_scale;
+            coords init_coord = selection->get_coords().first;
+            coords final_coord = selection->get_coords().second;
+            gdouble x_init = init_coord.x * img_scale;
+            gdouble x_final = final_coord.x * img_scale;
+            gdouble y_init = init_coord.y * img_scale;
+            gdouble y_final = final_coord.y *img_scale;
 
-        cr->move_to(x_init,y_init);
-        cr->line_to(x_init,y_final);
-        cr->line_to(x_final,y_final);
-        cr->line_to(x_final,y_init);
-        cr->line_to(x_init,y_init);
-        cr->stroke();
+            cr->move_to(x_init,y_init);
+            cr->line_to(x_init,y_final);
+            cr->line_to(x_final,y_final);
+            cr->line_to(x_final,y_init);
+            cr->line_to(x_init,y_init);
+            cr->stroke();
+        }
     }
 };
 

@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <gtkmm/stock.h>
 #include "LayerTools.h"
 
 LayerTools::LayerTools(LayerBox *layerbox) : tool_button_size(25)
@@ -20,8 +21,13 @@ LayerTools::LayerTools(LayerBox *layerbox) : tool_button_size(25)
     {
         const auto icon = Gdk::Pixbuf::create_from_file("../icons/alienarena.svg",tool_button_size,tool_button_size);
         auto btn = std::make_shared<Gtk::Button>();
-        tool_image_list.push_back(std::make_unique<Gtk::Image>(icon));
-        btn->set_image(*tool_image_list[0]);
+//        const std::unique_ptr<Gtk::Image> icon_img = Gtk::Image(Gtk::Stock::EDIT, Gtk::ICON_SIZE_BUTTON);
+//        auto a = Gtk::Image(Gtk::Stock::EDIT, Gtk::ICON_SIZE_BUTTON);
+        auto a = Gtk::Image(Gtk::Stock::EDIT, Gtk::ICON_SIZE_BUTTON);
+//        auto a = std::make_unique<Gtk::Image>(Gtk::Stock::EDIT, Gtk::ICON_SIZE_BUTTON);
+//        tool_image_list.push_back(std::move(a));
+        tool_image_list2.push_back(std::move(a));
+        btn->set_image(tool_image_list2[0]);
         btn->signal_clicked().connect(sigc::mem_fun(*this,&LayerTools::on_button1_clicked));
         tool_button_list.push_back(btn);
     }
@@ -31,8 +37,12 @@ LayerTools::LayerTools(LayerBox *layerbox) : tool_button_size(25)
     {
         const auto icon = Gdk::Pixbuf::create_from_file("../icons/browser.svg",tool_button_size,tool_button_size);
         auto btn = std::make_shared<Gtk::Button>();
-        tool_image_list.push_back(std::make_unique<Gtk::Image>(icon));
-        btn->set_image(*tool_image_list[1]);
+        auto a = Gtk::Image(Gtk::Stock::DELETE, Gtk::ICON_SIZE_BUTTON);
+//        auto a = std::make_unique<Gtk::Image>(Gtk::Stock::EDIT, Gtk::ICON_SIZE_BUTTON);
+//        tool_image_list.push_back(std::move(a));
+        tool_image_list2.push_back(std::move(a));
+//        tool_image_list.push_back(std::make_unique<Gtk::Image>(std::make_unique<Gtk::Image>(Gtk::Stock::DELETE, Gtk::ICON_SIZE_BUTTON)));
+        btn->set_image(tool_image_list2[1]);
         btn->signal_clicked().connect(sigc::mem_fun(*this,&LayerTools::on_button2_clicked));
         tool_button_list.push_back(btn);
     }
@@ -52,9 +62,9 @@ LayerTools::~LayerTools() {
 }
 
 void LayerTools::on_button1_clicked() {
-    parent->parent_delete_active_row();
+    parent->parent_edit_active_row();
 }
 
 void LayerTools::on_button2_clicked() {
-    parent->parent_edit_active_row();
+    parent->parent_delete_active_row();
 }

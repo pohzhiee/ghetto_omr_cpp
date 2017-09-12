@@ -23,7 +23,7 @@ protected:
     const int tool_button_size;
 
     std::vector<std::shared_ptr<Gtk::Button> > tool_button_list;
-    std::vector<std::unique_ptr<Gtk::Image> > tool_image_list;
+    std::vector<Gtk::Image> tool_image_list2;
 
     void on_button1_clicked();
     void on_button2_clicked();
