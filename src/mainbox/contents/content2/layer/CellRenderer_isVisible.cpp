@@ -11,7 +11,7 @@ CellRenderer_isVisible::CellRenderer_isVisible()
         Gtk::CellRenderer     (),
         property_activatable_ (*this, "activatable", true),
         property_active_      (*this, "active",      false),
-        icon(Gdk::Pixbuf::create_from_file("../icons/browser.svg",20,20,true))
+        icon(Gdk::Pixbuf::create_from_file("../icons/eye.svg",20,20,true))
 {
     property_mode() = Gtk::CellRendererMode::CELL_RENDERER_MODE_ACTIVATABLE;
     property_xpad() = 2;

@@ -134,8 +134,16 @@ long LayerListScrollable::get_row_index()
 
     auto selection = tree_view_.get_selection();
     auto row_iter = selection->get_selected();
-    long value = row_iter->get_value(list_columns_.unique_index);
-    return value;
+    if(row_iter)
+    {
+        Gtk::TreeModel::Row row = *row_iter;
+        long value = row[list_columns_.unique_index];
+        return value;
+    }
+    else
+    {
+        return -1;
+    }
 }
 
 /**
@@ -165,6 +173,7 @@ void LayerListScrollable::delete_data(long &index)
 void LayerListScrollable::delete_active_row()
 {
     long index = get_row_index();
+    if(index==-1){return;}
     if(!delete_confirm_dialog)
     {
         initialise_dialog();
@@ -192,6 +201,7 @@ void LayerListScrollable::edit_active_row()
 {
     auto selection = tree_view_.get_selection();
     auto row_iter = selection->get_selected();
+    if(!row_iter){return;}
     Gtk::TreeModel::Row row = *row_iter;
     long index = row.get_value(list_columns_.unique_index);
     std::shared_ptr<selection_data> &p_data = data::selections_map[index];
@@ -268,7 +278,6 @@ void LayerListScrollable::initialise_list()
     }
     //Append 2nd column
     tree_view_.append_column("Text", list_columns_.text);
-    tree_view_.append_column("Index", list_columns_.unique_index);
 
 }
 

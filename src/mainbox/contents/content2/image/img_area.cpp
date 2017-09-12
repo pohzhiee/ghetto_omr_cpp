@@ -248,6 +248,10 @@ bool img_area::on_button_release_event(GdkEventButton* release_event)
         time_final = release_event->time;
         coords_final.x = release_event->x;
         coords_final.y = release_event->y;
+        if(coords_init.x == coords_final.x && coords_init.y==coords_final.y)
+        {
+            return false;
+        }
 
 //        std::cout << "LEFT MOUSE RELEASED, COORDS IN CURRENT SCALE: " << std::endl;
 //
