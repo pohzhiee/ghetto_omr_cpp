@@ -7,9 +7,9 @@
 
 int mcq_data::mcq_count =0;
 
-mcq_data::mcq_data()
+mcq_data::mcq_data() : index(selection_data::unique_index)
 {
-    border_color.set_red(1);
+    border_color.set_red(0);
     border_color.set_green(0);
     border_color.set_blue(0);
     border_color.set_alpha(1);
@@ -20,6 +20,7 @@ mcq_data::mcq_data()
     variables["no_columns"] = "0";
     variables["no_rows"] = "0";
     variables["no_questions"] = "0";
+    variables["type"] = "mcq";
 }
 
 mcq_data::~mcq_data()
@@ -46,6 +47,9 @@ Gdk::RGBA mcq_data::get_color() const {
     return border_color;
 }
 
+long mcq_data::get_index() const {
+    return index;
+}
 //Setters
 void mcq_data::set_value_by_key(std::pair<std::string, Glib::ustring> pair)
 {

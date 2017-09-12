@@ -13,6 +13,8 @@
 #include <gtkmm/image.h>
 #include <gtkmm/scrolledwindow.h>
 #include "LayerBox.h"
+#include "../../../../data/selection_data.h"
+#include "../dialog/dialog.h"
 
 #include <memory>
 
@@ -21,9 +23,10 @@ class ModelColumns : public Gtk::TreeModel::ColumnRecord
 public:
     Gtk::TreeModelColumn<Glib::ustring> text;
     Gtk::TreeModelColumn<bool>          active;
-    Gtk::TreeModelColumn<int>           unique_index;
+    Gtk::TreeModelColumn<long>          unique_index;
+    Gtk::TreeModelColumn<std::shared_ptr<dialog>> dialog_ptr;
 
-    ModelColumns() { add(active);add(text);add(unique_index);  }
+    ModelColumns() { add(active);add(text);add(unique_index);add(dialog_ptr);  }
 };
 
 class LayerListScrollable : public Gtk::ScrolledWindow
@@ -45,16 +48,24 @@ protected:
 
     //Signal handlers
     void on_cell_toggled(const Glib::ustring& path_string);
+    void on_edit_dialog_response(int response_id, std::shared_ptr<dialog> &p_dialog,
+                                 Gtk::TreeModel::Row &row);
+
+    void on_edit_dialog_ok_clicked(std::shared_ptr<dialog> &ps_dialog,
+                                   Gtk::TreeModel::Row &row);
 
     //Getters
-    int get_row_index();
+    long get_row_index();
 
     //Deletion functions
-    void delete_data(int &index);
+    void delete_data(long &index);
+
     void delete_active_row();
+    void edit_active_row();
+
 
     //Add row
-    void add_row(Glib::ustring &input);
+    void add_row(std::shared_ptr<selection_data> data_ptr);
 
     //Creation functions
     void initialise_dialog();
@@ -62,8 +73,6 @@ protected:
 
 friend class LayerBox;
 
-private:
-    int index;
 };
 
 

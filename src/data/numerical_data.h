@@ -10,14 +10,18 @@ class numerical_data : public selection_data{
 protected:
     std::unordered_map<std::string, Glib::ustring> variables;
     Gdk::RGBA border_color;
+    const long index;
 public:
     static int num_count;
     numerical_data();
     virtual ~numerical_data();
 
+
+
     //Virtual getters
     virtual Glib::ustring get_value_by_key(std::string key) override;
     virtual Gdk::RGBA get_color() const override;
+    virtual long get_index() const override;
 
     //Virtual setters
     virtual void set_value_by_key(std::pair<std::string,Glib::ustring> pair) override;

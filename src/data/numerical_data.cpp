@@ -8,11 +8,11 @@
 
 int numerical_data::num_count =0;
 
-numerical_data::numerical_data()
+numerical_data::numerical_data() : index(selection_data::unique_index)
 {
-    border_color.set_red(1);
-    border_color.set_green(1);
-    border_color.set_blue(1);
+    border_color.set_red(0);
+    border_color.set_green(0);
+    border_color.set_blue(0);
     border_color.set_alpha(1);
     std::string count_str = std::to_string(num_count++);
     variables["layer_name"] = "Numerical " + count_str;
@@ -22,6 +22,7 @@ numerical_data::numerical_data()
     variables["no_rows"] = "0";
     variables["no_questions"] = "0";
     variables["no_digits"] = "0";
+    variables["type"] = "numerical";
 }
 
 numerical_data::~numerical_data()
@@ -48,6 +49,9 @@ Gdk::RGBA numerical_data::get_color() const {
     return border_color;
 }
 
+long numerical_data::get_index() const {
+    return index;
+}
 //Setters
 void numerical_data::set_value_by_key(std::pair<std::string, Glib::ustring> pair)
 {
@@ -57,3 +61,4 @@ void numerical_data::set_value_by_key(std::pair<std::string, Glib::ustring> pair
 void numerical_data::set_color(Gdk::RGBA color) {
     border_color = color;
 }
+

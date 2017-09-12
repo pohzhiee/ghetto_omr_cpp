@@ -5,6 +5,7 @@
 //#include "contents.h"
 
 //all classes are nested and hence are declared here
+#include <iostream>
 #include "content2.h"
 
 #include "content2/image/img_area.h"
@@ -54,6 +55,17 @@ content2::content2(){
 void content2::set_instruction_btm(int &tool_count)
 {
     btm_bar->set_instruction(tool_count);
+    if(tool_count ==3)
+    {
+        std::cout << "-------Selections--------" << std::endl;
+        for(auto &pair : data::selections_map)
+        {
+            auto coords = pair.second->get_coords();
+            std::cout << "Index: " << pair.second->get_index() << std::endl;
+            std::cout << "X1: " << coords.first.x << " Y1: "  << coords.first.y << std::endl;
+            std::cout << "X2: " << coords.second.x << " Y2: "  << coords.second.y << std::endl;
+        }
+    }
 };
 
 void content2::resize_img()

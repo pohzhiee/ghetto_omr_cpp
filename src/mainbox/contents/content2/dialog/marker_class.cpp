@@ -24,13 +24,13 @@ marker_class::marker_class(std::shared_ptr<selection_data> data_pointer)
     add_color_selector(color);
 }
 
-void marker_class::save_values()
+std::shared_ptr<selection_data> marker_class::save_values()
 {
     p_data->set_coords(coords_init,coords_final);
     p_data->set_color(m_Color);
     p_data->set_value_by_key(std::make_pair("layer_name",layer_entry->get_text()));
 
 
-    data::selections.push_back(p_data);
+    return p_data;
 
 }

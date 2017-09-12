@@ -40,8 +40,17 @@ void LayerBox::parent_delete_active_row()
     list->delete_active_row();
 }
 
-
-void LayerBox::add_row(Glib::ustring &input)
+void LayerBox::parent_edit_active_row()
 {
-    list->add_row(input);
+    list->edit_active_row();
+}
+
+/**
+ * Parent function of add row, used to call child function of add row
+ * @param data_ptr
+ * Pointer to data storage class
+ */
+void LayerBox::parent_add_row(std::shared_ptr<selection_data> data_ptr)
+{
+    list->add_row(data_ptr);
 }

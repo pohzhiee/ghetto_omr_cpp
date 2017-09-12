@@ -5,9 +5,11 @@
 #include "selection_data.h"
 #include <iostream>
 
+long selection_data::unique_index =0;
 
-selection_data::selection_data()
+selection_data::selection_data() : isVisible(true)
 {
+    unique_index++;
 }
 
 void selection_data::set_coords(coords input_init_coord, coords input_final_coord) {

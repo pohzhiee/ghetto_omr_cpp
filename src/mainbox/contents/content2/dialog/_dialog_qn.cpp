@@ -201,9 +201,10 @@ void dialog_qn::on_color_button_color_set()
 }
 
 
-void dialog_qn::save_values()
+std::shared_ptr<selection_data> dialog_qn::save_values()
 {
     std::cout << "BASE CLASS GET ALL VALUES CALLED" << std::endl;
+    return nullptr;
 }
 
 void dialog_qn::text_check(Gtk::Entry *p_entry, unsigned int index)

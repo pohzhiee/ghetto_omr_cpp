@@ -14,8 +14,9 @@
 
 
 class dialog : public Gtk::Dialog {
+    static std::shared_ptr<selection_data> temp;
 public:
-    dialog();
+    dialog(std::shared_ptr<selection_data> &p_data_input = temp);
     virtual ~dialog();
 
     //to access current set of parameters (e.g. numerical)
@@ -26,7 +27,7 @@ public:
     //warning message when input parameters dont make sense
     std::shared_ptr<Gtk::MessageDialog> p_warning;
 
-    void set_coords(coords input_coords_init, coords input_coords_final);
+    void set_coords(coords input_coords_init, coords input_coords_final, double scale = 1.0);
 protected:
     //coordinates of the selection
     coords coords_init, coords_final;

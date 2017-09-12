@@ -6,14 +6,15 @@
 
 int marker_data::marker_count = 0;
 
-marker_data::marker_data()
+marker_data::marker_data() : index(selection_data::unique_index)
 {
-    border_color.set_red(1);
-    border_color.set_green(1);
+    border_color.set_red(0);
+    border_color.set_green(0);
     border_color.set_blue(0);
     border_color.set_alpha(1);
     std::string count_str = std::to_string(marker_count++);
     variables["layer_name"] = "Marker " + count_str;
+    variables["type"] = "marker";
 }
 
 marker_data::~marker_data()
@@ -38,6 +39,10 @@ Glib::ustring marker_data::get_value_by_key(std::string key)
 
 Gdk::RGBA marker_data::get_color() const {
     return border_color;
+}
+
+long marker_data::get_index() const {
+    return index;
 }
 
 //Setters

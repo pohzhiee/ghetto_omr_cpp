@@ -16,7 +16,7 @@ protected:
     Gtk::Entry *col_entry, *row_entry, *qn_entry;
 public:
     mcq_class(std::shared_ptr<selection_data> input_pointer = nullptr);
-    void save_values() override;
+    std::shared_ptr<selection_data> save_values() override;
 
 };
 

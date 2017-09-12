@@ -3,7 +3,9 @@
 //
 
 #include "img_area.h"
+#include "../layer/LayerBox.h"
 #include <iostream>
+#include <thread>
 //-----Constructors and destructors start--------
 
 //default constructor
@@ -51,8 +53,9 @@ img_area::~img_area()
 //custom functions start
 void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
 {
-    for (std::shared_ptr<selection_data> selection: data::selections)
+    for (auto &pair : data::selections_map)
     {
+        std::shared_ptr<selection_data> &selection = pair.second;
         cr->set_line_width(2*img_scale);
         Gdk::RGBA rgba = selection->get_color();
         cr->set_source_rgb(rgba.get_red(),rgba.get_green(),rgba.get_blue());
@@ -70,7 +73,6 @@ void img_area::draw_all_rect(const Cairo::RefPtr<Cairo::Context>& cr)
         cr->line_to(x_final,y_init);
         cr->line_to(x_init,y_init);
         cr->stroke();
-
     }
 };
 
@@ -118,7 +120,8 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
 
         cr->paint();
 
-        if (data::selections.size() !=0){draw_all_rect(cr);}
+        if (data::selections_map.size() !=0){
+            draw_all_rect(cr);}
 //        cr->save();
         cr->set_line_width(2*img_scale);
         cr->set_source_rgb(0,0,0);
@@ -135,7 +138,7 @@ bool img_area::on_draw(const Cairo::RefPtr<Cairo::Context>& cr)
         if (!m_image)
             return false;
 
-        if(data::selections.size()!=0){draw_all_rect(cr);}
+        if(data::selections_map.size()!=0){draw_all_rect(cr);}
         Gtk::Allocation allocation = get_allocation();
         const int width = allocation.get_width();
         const int height = allocation.get_height();
@@ -211,8 +214,8 @@ bool img_area::on_enter_notify_event(GdkEventCrossing *crossing_event)
     m_refGdkWindow->set_cursor(cursor1);
     gdouble a = (*crossing_event).x;
     gdouble b = (*crossing_event).y;
-    std::cout << "ENTER NOTIFY EVENT:" << std::endl;
-    std::cout << a << std::endl << b << std::endl << "------" << std::endl;
+//    std::cout << "ENTER NOTIFY EVENT:" << std::endl;
+//    std::cout << a << std::endl << b << std::endl << "------" << std::endl;
     return true;
 
 }
@@ -244,18 +247,16 @@ bool img_area::on_button_release_event(GdkEventButton* release_event)
         coords_final.x = release_event->x;
         coords_final.y = release_event->y;
 
-//        selection_abs.push_back(rect_coords(coords_init,coords_final)/img_scale);
-        std::cout << "LEFT MOUSE RELEASED" << std::endl;
-
-        time_change = time_final-time_init;
-        std::cout << "X: " << coords_init.x << '\t' << coords_final.x << std::endl;
-        std::cout << "Y: " << coords_init.y << '\t' << coords_final.y << std::endl;
-        std::cout << "Change in time: " << time_change << std::endl;
-
+//        std::cout << "LEFT MOUSE RELEASED, COORDS IN CURRENT SCALE: " << std::endl;
+//
+//        time_change = time_final-time_init;
+//        std::cout << "X: " << coords_init.x << '\t' << coords_final.x << std::endl;
+//        std::cout << "Y: " << coords_init.y << '\t' << coords_final.y << std::endl;
+//        std::cout << "Change in time: " << time_change << std::endl;
 
         if(ps_dialog)
         {
-            ps_dialog->set_coords(coords_init, coords_final);
+            ps_dialog->set_coords(coords_init, coords_final, img_scale);
             ps_dialog->run();
         }
         else
@@ -267,7 +268,7 @@ bool img_area::on_button_release_event(GdkEventButton* release_event)
             }
             ps_dialog->signal_response().connect(
                     sigc::mem_fun(*this, &img_area::on_dialog_response));
-            ps_dialog->set_coords(coords_init, coords_final);
+            ps_dialog->set_coords(coords_init, coords_final, img_scale);
             ps_dialog->run();
         }
 
@@ -325,7 +326,8 @@ void img_area::on_dialog_ok_clicked()
     //Check if all the parameters are acceptable
     if((ps_dialog->current_set)->text_check_all())
     {
-        ps_dialog->current_set->save_values();
+        std::shared_ptr<selection_data> data_ptr = ps_dialog->current_set->save_values();
+        p_content2->layer_box->parent_add_row(data_ptr);
         ps_dialog.reset();
         //add coordinates to list
         selection_abs.push_back(rect_coords(coords_init,coords_final)/img_scale);

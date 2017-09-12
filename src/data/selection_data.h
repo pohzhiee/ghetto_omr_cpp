@@ -17,12 +17,15 @@ protected:
     selection_data();
     coords init_coord,final_coord;
     rect_coords rect;
+    static long unique_index;
 
 public:
+    bool isVisible;
     //Virtual getters
     virtual std::pair <coords,coords> get_coords();
     virtual Gdk::RGBA get_color() const=0;
     virtual Glib::ustring get_value_by_key(std::string key)=0;
+    virtual long get_index() const =0;
 
     //Virtual setters
     virtual void set_coords(coords init_coord, coords final_coord);

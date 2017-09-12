@@ -12,6 +12,7 @@ namespace data {
     double content2_img_siz = 100; //in terms of percent
     std::string str1 = "QWE",str2 = "ASD",str3 = "ZXC";
     std::vector<std::shared_ptr<selection_data>> selections;
+    std::unordered_map<long,std::shared_ptr<selection_data>> selections_map;
 
 };
 

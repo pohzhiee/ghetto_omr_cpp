@@ -56,6 +56,5 @@ void LayerTools::on_button1_clicked() {
 }
 
 void LayerTools::on_button2_clicked() {
-    Glib::ustring temp = "ASDF 123";
-    parent->add_row(temp);
+    parent->parent_edit_active_row();
 }

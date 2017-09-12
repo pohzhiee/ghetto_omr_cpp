@@ -100,7 +100,7 @@ mcq_class::mcq_class(std::shared_ptr<selection_data> data_pointer)
 }
 
 
-void mcq_class::save_values()
+std::shared_ptr<selection_data> mcq_class::save_values()
 {
     p_data->set_coords(coords_init, coords_final);
     p_data->set_color(m_Color);
@@ -124,6 +124,6 @@ void mcq_class::save_values()
         p_data->set_value_by_key(std::make_pair("orientation",row[columns.col_name]));
     }
 
-    data::selections.push_back(p_data);
+    return p_data;
 
 };

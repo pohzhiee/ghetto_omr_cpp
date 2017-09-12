@@ -38,7 +38,7 @@ public:
     dialog_qn();
     virtual ~dialog_qn();
 
-    virtual void save_values() = 0;
+    virtual std::shared_ptr<selection_data> save_values() = 0;
 
     bool text_check_all();
     void set_coords(coords input_coords_init, coords input_coords_final);

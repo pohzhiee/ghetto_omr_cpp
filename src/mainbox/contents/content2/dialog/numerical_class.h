@@ -16,7 +16,7 @@ protected:
 
 public:
     numerical_class(std::shared_ptr<selection_data> p_data = nullptr);
-    void save_values() override;
+    std::shared_ptr<selection_data> save_values() override;
 };
 
 

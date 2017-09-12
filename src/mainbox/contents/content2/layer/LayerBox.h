@@ -19,6 +19,7 @@ public:
     virtual ~LayerBox();
 
 
+    void parent_add_row(std::shared_ptr<selection_data> data_ptr);
 
 protected:
     content2 *p_content2;
@@ -29,11 +30,12 @@ protected:
 
 
     void parent_delete_active_row();
+    void parent_edit_active_row();
 
-    void add_row(Glib::ustring &input);
 
 
 friend class LayerTools;
+friend class LayerListScrollable;
 
 };
 

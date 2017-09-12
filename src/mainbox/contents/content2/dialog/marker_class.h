@@ -12,7 +12,7 @@
 class marker_class : public dialog_qn {
 public:
     marker_class(std::shared_ptr<selection_data> p_data = nullptr);
-    void save_values() override;
+    std::shared_ptr<selection_data> save_values() override;
 
 protected:
     std::shared_ptr<selection_data> p_data;
